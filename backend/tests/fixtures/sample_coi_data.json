@@ -1,0 +1,246 @@
+{
+  "description": "Sample COI data for testing AI extraction and validation",
+  "samples": [
+    {
+      "id": "coi_001",
+      "description": "Standard ACORD 25 - General Contractor with full coverage",
+      "raw_text_simulation": "CERTIFICATE OF LIABILITY INSURANCE\nDATE (MM/DD/YYYY): 01/15/2024\n\nTHIS CERTIFICATE IS ISSUED AS A MATTER OF INFORMATION ONLY AND CONFERS NO RIGHTS UPON THE CERTIFICATE HOLDER.\n\nINSURED:\nABC Construction Services LLC\n123 Builder Street\nAnytown, ST 12345\n\nINSURER A: National Insurance Company\nPOLICY NUMBER: GL-2024-001234\n\nTYPE OF INSURANCE: COMMERCIAL GENERAL LIABILITY\nPOLICY EFF (MM/DD/YYYY): 01/01/2024\nPOLICY EXP (MM/DD/YYYY): 01/01/2025\n\nEACH OCCURRENCE: $1,000,000\nDAMAGE TO RENTED PREMISES: $100,000\nMED EXP: $5,000\nPERSONAL & ADV INJURY: $1,000,000\nGENERAL AGGREGATE: $2,000,000\nPRODUCTS-COMP/OP AGG: $2,000,000\n\nAUTOMOBILE LIABILITY\nCOMBINED SINGLE LIMIT: $1,000,000\n\nUMBRELLA LIAB: $5,000,000 EACH OCCURRENCE\nAGGREGATE: $5,000,000\n\nWORKERS COMPENSATION AND EMPLOYERS LIABILITY\nE.L. EACH ACCIDENT: $1,000,000\nE.L. DISEASE - EA EMPLOYEE: $1,000,000\nE.L. DISEASE - POLICY LIMIT: $1,000,000\n\nDESCRIPTION OF OPERATIONS: General contracting services. Certificate holder is included as additional insured per written contract.\n\nCERTIFICATE HOLDER:\nXYZ Property Management\n456 Main Street\nAnytown, ST 12345\n\nADDITIONAL INSURED: X\nWAIVER OF SUBROGATION: X",
+      "expected_extraction": {
+        "named_insured": "ABC Construction Services LLC",
+        "policy_number": "GL-2024-001234",
+        "carrier_name": "National Insurance Company",
+        "effective_date": "2024-01-01",
+        "expiration_date": "2025-01-01",
+        "general_liability_limit": 1000000,
+        "general_aggregate_limit": 2000000,
+        "auto_liability_limit": 1000000,
+        "workers_comp_coverage": true,
+        "workers_comp_limit": 1000000,
+        "umbrella_limit": 5000000,
+        "certificate_holder": "XYZ Property Management, 456 Main Street, Anytown, ST 12345",
+        "additional_insured": true,
+        "waiver_of_subrogation": true,
+        "description_of_operations": "General contracting services. Certificate holder is included as additional insured per written contract."
+      },
+      "validation_tests": {
+        "meets_1m_gl_requirement": true,
+        "meets_1m_auto_requirement": true,
+        "has_workers_comp": true,
+        "has_additional_insured": true,
+        "is_current": true
+      }
+    },
+    {
+      "id": "coi_002",
+      "description": "Landscaping company - Lower limits, no umbrella",
+      "raw_text_simulation": "CERTIFICATE OF LIABILITY INSURANCE\nDATE: 12/01/2023\n\nINSURED:\nGreen Thumb Landscaping\n789 Garden Way\nSpringfield, ST 54321\n\nINSURER: Regional Insurance Group\nPOLICY #: CGL-789456\n\nCOMMERCIAL GENERAL LIABILITY\nEFF DATE: 11/15/2023\nEXP DATE: 11/15/2024\n\nEACH OCCURRENCE: $500,000\nGENERAL AGGREGATE: $1,000,000\n\nAUTO LIABILITY: $500,000 CSL\n\nNO UMBRELLA COVERAGE\n\nWORKERS COMP: INCLUDED\nEACH ACCIDENT: $500,000\n\nCERTIFICATE HOLDER:\nSunset Apartments LLC\n100 Sunset Blvd\nSpringfield, ST 54321",
+      "expected_extraction": {
+        "named_insured": "Green Thumb Landscaping",
+        "policy_number": "CGL-789456",
+        "carrier_name": "Regional Insurance Group",
+        "effective_date": "2023-11-15",
+        "expiration_date": "2024-11-15",
+        "general_liability_limit": 500000,
+        "general_aggregate_limit": 1000000,
+        "auto_liability_limit": 500000,
+        "workers_comp_coverage": true,
+        "workers_comp_limit": 500000,
+        "umbrella_limit": null,
+        "certificate_holder": "Sunset Apartments LLC, 100 Sunset Blvd, Springfield, ST 54321",
+        "additional_insured": false,
+        "waiver_of_subrogation": false,
+        "description_of_operations": null
+      },
+      "validation_tests": {
+        "meets_1m_gl_requirement": false,
+        "meets_1m_auto_requirement": false,
+        "has_workers_comp": true,
+        "has_additional_insured": false,
+        "is_current": true
+      }
+    },
+    {
+      "id": "coi_003",
+      "description": "HVAC contractor - Expired certificate",
+      "raw_text_simulation": "CERTIFICATE OF LIABILITY INSURANCE\n\nINSURED: Cool Air HVAC Inc.\n555 Climate Control Dr\nMetroville, ST 99999\n\nINSURER: TrustShield Insurance\nPOLICY NUMBER: HVAC-2023-5555\n\nGENERAL LIABILITY\nEFFECTIVE: 06/01/2023\nEXPIRATION: 06/01/2024\n\nEACH OCCURRENCE: $1,000,000\nAGGREGATE: $2,000,000\n\nAUTO: $1,000,000\n\nWORKERS COMP: YES\nLIMIT: $1,000,000\n\nCERTIFICATE HOLDER:\nBig Office Building LLC",
+      "expected_extraction": {
+        "named_insured": "Cool Air HVAC Inc.",
+        "policy_number": "HVAC-2023-5555",
+        "carrier_name": "TrustShield Insurance",
+        "effective_date": "2023-06-01",
+        "expiration_date": "2024-06-01",
+        "general_liability_limit": 1000000,
+        "general_aggregate_limit": 2000000,
+        "auto_liability_limit": 1000000,
+        "workers_comp_coverage": true,
+        "workers_comp_limit": 1000000,
+        "umbrella_limit": null,
+        "certificate_holder": "Big Office Building LLC",
+        "additional_insured": false,
+        "waiver_of_subrogation": false,
+        "description_of_operations": null
+      },
+      "validation_tests": {
+        "meets_1m_gl_requirement": true,
+        "meets_1m_auto_requirement": true,
+        "has_workers_comp": true,
+        "has_additional_insured": false,
+        "is_current": false
+      }
+    },
+    {
+      "id": "coi_004",
+      "description": "Cleaning service - No auto coverage needed",
+      "raw_text_simulation": "CERTIFICATE OF LIABILITY INSURANCE\nISSUE DATE: 02/10/2024\n\nNAMED INSURED:\nSparkle Clean Services\n222 Mop Street, Suite 100\nCleantown, ST 33333\n\nINSURANCE COMPANY: SafeGuard Mutual\nPOLICY: SG-CLEAN-2024-222\n\nCOMMERCIAL GENERAL LIABILITY\nPOLICY PERIOD: 02/01/2024 TO 02/01/2025\n\nLIMITS:\nEACH OCCURRENCE: $1,000,000\nGENERAL AGGREGATE: $2,000,000\nPRODUCTS/COMPLETED OPS: $1,000,000\nPERSONAL INJURY: $1,000,000\n\nNO AUTOMOBILE LIABILITY - NOT APPLICABLE\n\nWORKERS COMPENSATION: STATUTORY LIMITS\nEMPLOYERS LIABILITY: $500,000\n\nADDITIONAL INSURED: YES - AS PER WRITTEN CONTRACT\nWAIVER OF SUBROGATION APPLIES\n\nCERTIFICATE HOLDER:\nCorporate Office Park\n1000 Business Center Blvd\nCleantown, ST 33333",
+      "expected_extraction": {
+        "named_insured": "Sparkle Clean Services",
+        "policy_number": "SG-CLEAN-2024-222",
+        "carrier_name": "SafeGuard Mutual",
+        "effective_date": "2024-02-01",
+        "expiration_date": "2025-02-01",
+        "general_liability_limit": 1000000,
+        "general_aggregate_limit": 2000000,
+        "auto_liability_limit": null,
+        "workers_comp_coverage": true,
+        "workers_comp_limit": 500000,
+        "umbrella_limit": null,
+        "certificate_holder": "Corporate Office Park, 1000 Business Center Blvd, Cleantown, ST 33333",
+        "additional_insured": true,
+        "waiver_of_subrogation": true,
+        "description_of_operations": null
+      },
+      "validation_tests": {
+        "meets_1m_gl_requirement": true,
+        "meets_1m_auto_requirement": false,
+        "has_workers_comp": true,
+        "has_additional_insured": true,
+        "is_current": true
+      }
+    },
+    {
+      "id": "coi_005",
+      "description": "Security company - High limits with umbrella",
+      "raw_text_simulation": "ACORD CERTIFICATE OF LIABILITY INSURANCE\nDATE: 01/20/2024\n\nPRODUCER:\nInsurance Brokers Inc.\n\nINSURED:\nGuardian Security Services Corp\n999 Patrol Ave\nSafetown, ST 77777\n\nINSURER A: Elite Insurance Company (A+ Rated)\nINSURER B: Umbrella Specialists Inc.\n\nGENERAL LIABILITY - INSURER A\nPOLICY: EIC-GL-2024-999\nEFF: 01/01/2024  EXP: 01/01/2025\nEACH OCCURRENCE: $2,000,000\nDAMAGE TO RENTED PREMISES: $300,000\nMEDICAL EXPENSE: $10,000\nPERSONAL & ADV INJURY: $2,000,000\nGENERAL AGGREGATE: $4,000,000\nPRODUCTS-COMP/OP: $4,000,000\n\nAUTOMOBILE LIABILITY - INSURER A\nPOLICY: EIC-AUTO-2024-999\nCOMBINED SINGLE LIMIT: $2,000,000\n\nUMBRELLA LIABILITY - INSURER B\nPOLICY: USI-UMB-2024-999\nEACH OCCURRENCE: $10,000,000\nAGGREGATE: $10,000,000\n\nWORKERS COMPENSATION - INSURER A\nPOLICY: EIC-WC-2024-999\nSTATUTORY\nE.L. EACH ACCIDENT: $1,000,000\nE.L. DISEASE-EA EMPLOYEE: $1,000,000\nE.L. DISEASE-POLICY LIMIT: $1,000,000\n\nDESCRIPTION:\nUnarmed security guard services for commercial properties.\nCertificate holder is named as additional insured.\nWaiver of subrogation applies in favor of certificate holder.\n\nCERTIFICATE HOLDER:\nLuxury Mall Properties LLC\n5000 Shopping Center Way\nSafetown, ST 77777",
+      "expected_extraction": {
+        "named_insured": "Guardian Security Services Corp",
+        "policy_number": "EIC-GL-2024-999",
+        "carrier_name": "Elite Insurance Company",
+        "effective_date": "2024-01-01",
+        "expiration_date": "2025-01-01",
+        "general_liability_limit": 2000000,
+        "general_aggregate_limit": 4000000,
+        "auto_liability_limit": 2000000,
+        "workers_comp_coverage": true,
+        "workers_comp_limit": 1000000,
+        "umbrella_limit": 10000000,
+        "certificate_holder": "Luxury Mall Properties LLC, 5000 Shopping Center Way, Safetown, ST 77777",
+        "additional_insured": true,
+        "waiver_of_subrogation": true,
+        "description_of_operations": "Unarmed security guard services for commercial properties. Certificate holder is named as additional insured. Waiver of subrogation applies in favor of certificate holder."
+      },
+      "validation_tests": {
+        "meets_1m_gl_requirement": true,
+        "meets_1m_auto_requirement": true,
+        "has_workers_comp": true,
+        "has_additional_insured": true,
+        "is_current": true
+      }
+    }
+  ],
+  "edge_cases": [
+    {
+      "id": "edge_001",
+      "description": "Poor quality scan with OCR errors",
+      "raw_text_simulation": "CERTIF1CATE 0F L1AB1LITY 1NSURANCE\n\n1NSURED: Qu4lity Plumbing Svcs\nP0LICY: QP-2O24-1111\nEXP1RES: O3/15/2O25\nGL L1MIT: $1,OOO,OOO",
+      "expected_extraction": {
+        "named_insured": "Quality Plumbing Svcs",
+        "policy_number": "QP-2024-1111",
+        "expiration_date": "2025-03-15",
+        "general_liability_limit": 1000000
+      },
+      "notes": "Test OCR correction capability - 0/O and 1/I substitutions"
+    },
+    {
+      "id": "edge_002",
+      "description": "Missing required fields",
+      "raw_text_simulation": "CERTIFICATE OF INSURANCE\n\nINSURED: Mystery Contractor\n\nGENERAL LIABILITY: $1,000,000\n\nCERTIFICATE HOLDER: ABC Company",
+      "expected_extraction": {
+        "named_insured": "Mystery Contractor",
+        "policy_number": null,
+        "carrier_name": null,
+        "effective_date": null,
+        "expiration_date": null,
+        "general_liability_limit": 1000000,
+        "certificate_holder": "ABC Company"
+      },
+      "notes": "Test handling of incomplete certificates - should flag for review"
+    },
+    {
+      "id": "edge_003",
+      "description": "Multiple policies on one certificate",
+      "raw_text_simulation": "CERTIFICATE OF LIABILITY INSURANCE\n\nINSURED: Multi-Policy Corp\n\nINSURER A: First Insurance Co - Policy A-111 - GL $1M - Exp 01/01/2025\nINSURER B: Second Insurance Co - Policy B-222 - AUTO $1M - Exp 03/01/2025\nINSURER C: Third Insurance Co - Policy C-333 - WC Statutory - Exp 02/01/2025",
+      "expected_extraction": {
+        "named_insured": "Multi-Policy Corp",
+        "policy_number": "A-111",
+        "carrier_name": "First Insurance Co",
+        "expiration_date": "2025-01-01",
+        "general_liability_limit": 1000000,
+        "auto_liability_limit": 1000000,
+        "workers_comp_coverage": true
+      },
+      "notes": "Test handling of multiple insurers - use earliest expiration for tracking"
+    }
+  ],
+  "vendor_test_data": [
+    {
+      "name": "ABC Construction Services LLC",
+      "vendor_type": "General Contractor",
+      "risk_level": "high",
+      "email": "insurance@abcconstruction.example.com",
+      "phone": "(555) 123-4567",
+      "requires_auto_coverage": true,
+      "requires_workers_comp": true,
+      "minimum_gl_limit": 1000000
+    },
+    {
+      "name": "Green Thumb Landscaping",
+      "vendor_type": "Service Provider",
+      "risk_level": "medium",
+      "email": "admin@greenthumb.example.com",
+      "phone": "(555) 234-5678",
+      "requires_auto_coverage": true,
+      "requires_workers_comp": true,
+      "minimum_gl_limit": 500000
+    },
+    {
+      "name": "Cool Air HVAC Inc.",
+      "vendor_type": "Subcontractor",
+      "risk_level": "medium",
+      "email": "compliance@coolair.example.com",
+      "phone": "(555) 345-6789",
+      "requires_auto_coverage": true,
+      "requires_workers_comp": true,
+      "minimum_gl_limit": 1000000
+    },
+    {
+      "name": "Sparkle Clean Services",
+      "vendor_type": "Service Provider",
+      "risk_level": "low",
+      "email": "office@sparkleclean.example.com",
+      "phone": "(555) 456-7890",
+      "requires_auto_coverage": false,
+      "requires_workers_comp": true,
+      "minimum_gl_limit": 1000000
+    },
+    {
+      "name": "Guardian Security Services Corp",
+      "vendor_type": "Service Provider",
+      "risk_level": "high",
+      "email": "risk@guardiansecurity.example.com",
+      "phone": "(555) 567-8901",
+      "requires_auto_coverage": true,
+      "requires_workers_comp": true,
+      "minimum_gl_limit": 2000000
+    }
+  ]
+}

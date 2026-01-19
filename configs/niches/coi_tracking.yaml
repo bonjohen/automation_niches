@@ -1,0 +1,715 @@
+# Vendor Certificate of Insurance (COI) Tracking
+# Niche configuration for tracking vendor insurance compliance
+
+niche:
+  id: coi_tracking
+  name: Vendor COI Tracking
+  description: Track and manage vendor Certificates of Insurance to ensure continuous coverage and compliance
+  version: "1.0.0"
+
+# =============================================================================
+# ENTITY TYPES
+# =============================================================================
+entity_types:
+  - code: vendor
+    name: Vendor
+    description: Third-party vendor, contractor, or service provider
+    icon: building
+    fields:
+      - name: company_name
+        label: Company Name
+        type: string
+        required: true
+
+      - name: contact_name
+        label: Primary Contact Name
+        type: string
+        required: false
+
+      - name: contact_email
+        label: Contact Email
+        type: email
+        required: false
+
+      - name: contact_phone
+        label: Contact Phone
+        type: phone
+        required: false
+
+      - name: tax_id
+        label: Tax ID / EIN
+        type: string
+        required: false
+
+      - name: vendor_type
+        label: Vendor Type
+        type: select
+        required: true
+        options:
+          - General Contractor
+          - Subcontractor
+          - Supplier
+          - Service Provider
+          - Consultant
+          - Property Management
+          - Maintenance
+          - Other
+
+      - name: contract_start_date
+        label: Contract Start Date
+        type: date
+        required: false
+
+      - name: contract_end_date
+        label: Contract End Date
+        type: date
+        required: false
+
+      - name: annual_contract_value
+        label: Annual Contract Value
+        type: currency
+        required: false
+
+      - name: risk_level
+        label: Risk Level
+        type: select
+        required: true
+        default: medium
+        options:
+          - low
+          - medium
+          - high
+          - critical
+
+      - name: services_provided
+        label: Services Provided
+        type: text
+        required: false
+
+      - name: work_locations
+        label: Work Locations
+        type: multi-select
+        required: false
+        options:
+          - On-site
+          - Remote
+          - Client locations
+          - Multiple sites
+
+      - name: requires_auto_coverage
+        label: Requires Auto Coverage
+        type: boolean
+        required: false
+        default: false
+
+      - name: requires_workers_comp
+        label: Requires Workers Comp
+        type: boolean
+        required: false
+        default: true
+
+      - name: notes
+        label: Notes
+        type: text
+        required: false
+
+# =============================================================================
+# REQUIREMENT TYPES
+# =============================================================================
+requirement_types:
+  - code: coi_verification
+    name: COI Verification
+    description: Verify vendor's Certificate of Insurance is current and meets minimum coverage requirements
+    frequency: annually
+    default_priority: high
+
+    applicable_entity_types:
+      - vendor
+
+    required_document_types:
+      - certificate_of_insurance
+
+    notification_rules:
+      days_before:
+        - 60
+        - 30
+        - 14
+        - 7
+        - 3
+        - 1
+      escalation:
+        enabled: true
+        days_overdue: 7
+        escalate_to: manager
+
+    fields:
+      - name: minimum_general_liability
+        label: Minimum General Liability
+        type: currency
+        required: true
+        default: 1000000
+
+      - name: minimum_auto_liability
+        label: Minimum Auto Liability
+        type: currency
+        required: false
+        default: 1000000
+
+      - name: minimum_umbrella
+        label: Minimum Umbrella/Excess Liability
+        type: currency
+        required: false
+
+      - name: require_additional_insured
+        label: Require Additional Insured Endorsement
+        type: boolean
+        required: false
+        default: true
+
+      - name: require_waiver_of_subrogation
+        label: Require Waiver of Subrogation
+        type: boolean
+        required: false
+        default: false
+
+      - name: verification_notes
+        label: Verification Notes
+        type: text
+        required: false
+
+  - code: workers_comp_verification
+    name: Workers Compensation Verification
+    description: Verify vendor's Workers Compensation coverage is current
+    frequency: annually
+    default_priority: high
+
+    applicable_entity_types:
+      - vendor
+
+    required_document_types:
+      - certificate_of_insurance
+      - workers_comp_certificate
+
+    notification_rules:
+      days_before:
+        - 30
+        - 14
+        - 7
+        - 1
+      escalation:
+        enabled: true
+        days_overdue: 3
+        escalate_to: manager
+
+    fields:
+      - name: state_of_coverage
+        label: State of Coverage
+        type: string
+        required: false
+
+      - name: experience_modification_rate
+        label: Experience Modification Rate (EMR)
+        type: number
+        required: false
+
+# =============================================================================
+# DOCUMENT TYPES
+# =============================================================================
+document_types:
+  - code: certificate_of_insurance
+    name: Certificate of Insurance (COI)
+    description: Standard ACORD 25 or similar certificate of liability insurance
+    accepted_mime_types:
+      - application/pdf
+      - image/png
+      - image/jpeg
+      - image/tiff
+
+    extraction_prompt: |
+      You are an expert insurance document analyst. Extract information from this Certificate of Insurance (COI).
+
+      Please extract the following fields and return them as a JSON object:
+
+      1. named_insured: The company/person name listed as the insured (usually in the "INSURED" box)
+      2. policy_number: The general liability policy number
+      3. carrier_name: The insurance company name (carrier/insurer)
+      4. effective_date: Policy effective date (start date) in YYYY-MM-DD format
+      5. expiration_date: Policy expiration date in YYYY-MM-DD format
+      6. general_liability_limit: General liability each occurrence limit (number only, no symbols)
+      7. general_aggregate_limit: General aggregate limit (number only)
+      8. auto_liability_limit: Automobile liability combined single limit (number only, null if not listed)
+      9. workers_comp_coverage: true if workers compensation is listed, false otherwise
+      10. workers_comp_limit: Workers comp each accident limit (number only, null if not listed)
+      11. umbrella_limit: Umbrella/excess liability each occurrence limit (number only, null if not listed)
+      12. certificate_holder: The certificate holder name and address
+      13. additional_insured: true if additional insured is checked/indicated, false otherwise
+      14. waiver_of_subrogation: true if waiver of subrogation is indicated, false otherwise
+      15. description_of_operations: The description of operations/locations/vehicles text
+
+      Important:
+      - Use null for any fields that are not present or unclear
+      - Convert all coverage amounts to numbers (e.g., "1,000,000" becomes 1000000)
+      - Use ISO date format YYYY-MM-DD for all dates
+      - Return only valid JSON, no additional text
+
+    extraction_schema:
+      fields:
+        - name: named_insured
+          label: Named Insured
+          type: string
+          required: true
+
+        - name: policy_number
+          label: Policy Number
+          type: string
+          required: true
+
+        - name: carrier_name
+          label: Insurance Carrier
+          type: string
+          required: true
+
+        - name: effective_date
+          label: Effective Date
+          type: date
+          required: true
+
+        - name: expiration_date
+          label: Expiration Date
+          type: date
+          required: true
+
+        - name: general_liability_limit
+          label: General Liability (Each Occurrence)
+          type: number
+          required: true
+
+        - name: general_aggregate_limit
+          label: General Aggregate Limit
+          type: number
+          required: false
+
+        - name: auto_liability_limit
+          label: Auto Liability Limit
+          type: number
+          required: false
+
+        - name: workers_comp_coverage
+          label: Has Workers Comp
+          type: boolean
+          required: false
+
+        - name: workers_comp_limit
+          label: Workers Comp Limit
+          type: number
+          required: false
+
+        - name: umbrella_limit
+          label: Umbrella/Excess Limit
+          type: number
+          required: false
+
+        - name: certificate_holder
+          label: Certificate Holder
+          type: string
+          required: false
+
+        - name: additional_insured
+          label: Additional Insured Endorsed
+          type: boolean
+          required: false
+
+        - name: waiver_of_subrogation
+          label: Waiver of Subrogation
+          type: boolean
+          required: false
+
+        - name: description_of_operations
+          label: Description of Operations
+          type: string
+          required: false
+
+    validation_rules:
+      - field: expiration_date
+        rule: date_after
+        value: effective_date
+        message: Expiration date must be after effective date
+
+      - field: expiration_date
+        rule: date_not_past
+        value: null
+        message: Certificate has already expired
+
+      - field: general_liability_limit
+        rule: min_value
+        value: 0
+        message: General liability limit must be a positive number
+
+  - code: workers_comp_certificate
+    name: Workers Compensation Certificate
+    description: Workers Compensation and Employers Liability certificate
+    accepted_mime_types:
+      - application/pdf
+      - image/png
+      - image/jpeg
+
+    extraction_prompt: |
+      Extract information from this Workers Compensation certificate:
+
+      1. named_insured: The employer/company name
+      2. policy_number: The policy number
+      3. carrier_name: The insurance carrier
+      4. effective_date: Policy start date (YYYY-MM-DD)
+      5. expiration_date: Policy end date (YYYY-MM-DD)
+      6. coverage_states: List of states covered
+      7. each_accident_limit: Each accident limit (number)
+      8. disease_policy_limit: Disease policy limit (number)
+      9. disease_each_employee: Disease each employee limit (number)
+      10. experience_mod_rate: Experience modification rate (decimal, e.g., 0.85)
+
+      Return as JSON. Use null for missing fields. Numbers only for limits.
+
+    extraction_schema:
+      fields:
+        - name: named_insured
+          label: Named Insured
+          type: string
+          required: true
+
+        - name: policy_number
+          label: Policy Number
+          type: string
+          required: true
+
+        - name: carrier_name
+          label: Carrier
+          type: string
+          required: true
+
+        - name: effective_date
+          label: Effective Date
+          type: date
+          required: true
+
+        - name: expiration_date
+          label: Expiration Date
+          type: date
+          required: true
+
+        - name: coverage_states
+          label: Coverage States
+          type: array
+          required: false
+
+        - name: each_accident_limit
+          label: Each Accident Limit
+          type: number
+          required: false
+
+        - name: disease_policy_limit
+          label: Disease Policy Limit
+          type: number
+          required: false
+
+        - name: experience_mod_rate
+          label: Experience Mod Rate
+          type: number
+          required: false
+
+    validation_rules:
+      - field: expiration_date
+        rule: date_after
+        value: effective_date
+        message: Expiration date must be after effective date
+
+# =============================================================================
+# WORKFLOW RULES
+# =============================================================================
+workflow_rules:
+  - code: new_vendor_coi_requirement
+    name: Create COI requirement for new vendors
+    description: Automatically create a COI verification requirement when a new vendor is added
+    enabled: true
+    trigger:
+      event: entity.created
+      conditions:
+        - field: entity_type
+          operator: equals
+          value: vendor
+    actions:
+      - type: create_requirement
+        params:
+          requirement_type: coi_verification
+          name: "COI Verification - {{entity.name}}"
+          due_date_offset: 14
+          priority: high
+
+  - code: new_vendor_workers_comp_requirement
+    name: Create Workers Comp requirement for vendors requiring it
+    description: Create workers comp requirement if vendor requires workers comp coverage
+    enabled: true
+    trigger:
+      event: entity.created
+      conditions:
+        - field: entity_type
+          operator: equals
+          value: vendor
+        - field: custom_fields.requires_workers_comp
+          operator: equals
+          value: true
+    actions:
+      - type: create_requirement
+        params:
+          requirement_type: workers_comp_verification
+          name: "Workers Comp Verification - {{entity.name}}"
+          due_date_offset: 14
+          priority: high
+
+  - code: coi_processed_link_requirement
+    name: Link processed COI to vendor requirement
+    description: When a COI is processed, link it to the vendor's open COI requirement and update due date
+    enabled: true
+    trigger:
+      event: document.processed
+      conditions:
+        - field: document_type
+          operator: equals
+          value: certificate_of_insurance
+        - field: extraction_confidence
+          operator: greater_than
+          value: 0.7
+    actions:
+      - type: link_document
+        params:
+          requirement_type: coi_verification
+      - type: update_requirement
+        params:
+          due_date: "{{document.extracted_data.expiration_date}}"
+      - type: update_status
+        params:
+          status: compliant
+          conditions:
+            - field: document.extracted_data.general_liability_limit
+              operator: greater_than_or_equal
+              value: "{{requirement.custom_fields.minimum_general_liability}}"
+
+  - code: coi_expiring_soon
+    name: Mark COI as expiring soon
+    description: Update requirement status when expiration is approaching
+    enabled: true
+    trigger:
+      event: requirement.expiring
+      conditions:
+        - field: requirement_type
+          operator: equals
+          value: coi_verification
+        - field: days_until_due
+          operator: less_than_or_equal
+          value: 30
+    actions:
+      - type: update_status
+        params:
+          status: expiring_soon
+
+  - code: coi_expired
+    name: Mark COI as expired
+    description: Update requirement status when past due date
+    enabled: true
+    trigger:
+      event: requirement.expired
+      conditions:
+        - field: requirement_type
+          operator: equals
+          value: coi_verification
+    actions:
+      - type: update_status
+        params:
+          status: expired
+
+# =============================================================================
+# NOTIFICATION TEMPLATES
+# =============================================================================
+notification_templates:
+  - code: coi_initial_request
+    name: Initial COI Request
+    notification_type: reminder
+    channel: email
+    subject: "Insurance Certificate Required - {{entity.name}}"
+    body: |
+      <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hello {{user.first_name}},</p>
+
+        <p>A Certificate of Insurance (COI) is required for the following vendor:</p>
+
+        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+          <strong>Vendor:</strong> {{entity.name}}<br>
+          <strong>Due Date:</strong> {{requirement.due_date | date('%B %d, %Y')}}<br>
+          <strong>Minimum General Liability Required:</strong> ${{requirement.custom_fields.minimum_general_liability | number_format}}
+        </div>
+
+        <p>Please request the COI from the vendor and upload it to the system.</p>
+
+        <p style="margin-top: 20px;">
+          <a href="{{app_url}}/requirements/{{requirement.id}}"
+             style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            View Requirement
+          </a>
+        </p>
+
+        <p style="margin-top: 30px; color: #666; font-size: 12px;">
+          This is an automated message from {{account.name}}.
+        </p>
+      </body>
+      </html>
+
+  - code: coi_expiring_30_days
+    name: COI Expiring in 30 Days
+    notification_type: expiring
+    channel: email
+    subject: "⚠️ COI Expiring in 30 Days - {{entity.name}}"
+    body: |
+      <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hello {{user.first_name}},</p>
+
+        <p>The Certificate of Insurance for <strong>{{entity.name}}</strong> will expire in 30 days.</p>
+
+        <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #ffc107;">
+          <strong>Vendor:</strong> {{entity.name}}<br>
+          <strong>Current Expiration:</strong> {{requirement.due_date | date('%B %d, %Y')}}<br>
+          <strong>Days Remaining:</strong> 30
+        </div>
+
+        <p>Please contact the vendor to request an updated certificate before the current one expires.</p>
+
+        <p style="margin-top: 20px;">
+          <a href="{{app_url}}/requirements/{{requirement.id}}"
+             style="background: #ffc107; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            View Requirement
+          </a>
+        </p>
+      </body>
+      </html>
+
+  - code: coi_expiring_7_days
+    name: COI Expiring in 7 Days
+    notification_type: expiring
+    channel: email
+    subject: "🚨 URGENT: COI Expiring in 7 Days - {{entity.name}}"
+    body: |
+      <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hello {{user.first_name}},</p>
+
+        <p><strong style="color: #dc3545;">URGENT:</strong> The Certificate of Insurance for
+        <strong>{{entity.name}}</strong> will expire in <strong>7 days</strong>.</p>
+
+        <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #dc3545;">
+          <strong>Vendor:</strong> {{entity.name}}<br>
+          <strong>Expiration Date:</strong> {{requirement.due_date | date('%B %d, %Y')}}<br>
+          <strong>Days Remaining:</strong> 7
+        </div>
+
+        <p>Immediate action is required to avoid a coverage gap. Please contact the vendor today.</p>
+
+        <p style="margin-top: 20px;">
+          <a href="{{app_url}}/requirements/{{requirement.id}}"
+             style="background: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Take Action Now
+          </a>
+        </p>
+      </body>
+      </html>
+
+  - code: coi_expired
+    name: COI Expired
+    notification_type: overdue
+    channel: email
+    subject: "❌ EXPIRED: COI for {{entity.name}} has expired"
+    body: |
+      <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hello {{user.first_name}},</p>
+
+        <p><strong style="color: #dc3545;">ALERT:</strong> The Certificate of Insurance for
+        <strong>{{entity.name}}</strong> has <strong>EXPIRED</strong>.</p>
+
+        <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #dc3545;">
+          <strong>Vendor:</strong> {{entity.name}}<br>
+          <strong>Expired On:</strong> {{requirement.due_date | date('%B %d, %Y')}}<br>
+          <strong>Status:</strong> <span style="color: #dc3545; font-weight: bold;">NON-COMPLIANT</span>
+        </div>
+
+        <p>This vendor is currently operating without valid insurance coverage on file.
+        Please take immediate action:</p>
+
+        <ol>
+          <li>Contact the vendor immediately to obtain updated COI</li>
+          <li>Consider suspending work until coverage is verified</li>
+          <li>Document any communication attempts</li>
+        </ol>
+
+        <p style="margin-top: 20px;">
+          <a href="{{app_url}}/requirements/{{requirement.id}}"
+             style="background: #dc3545; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Resolve Now
+          </a>
+        </p>
+      </body>
+      </html>
+
+  - code: coi_escalation
+    name: COI Escalation to Manager
+    notification_type: escalation
+    channel: email
+    subject: "🔺 ESCALATION: Overdue COI for {{entity.name}}"
+    body: |
+      <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hello {{user.first_name}},</p>
+
+        <p>This is an escalation notice. The following COI requirement has been overdue
+        for more than 7 days without resolution:</p>
+
+        <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #dc3545;">
+          <strong>Vendor:</strong> {{entity.name}}<br>
+          <strong>Requirement:</strong> {{requirement.name}}<br>
+          <strong>Due Date:</strong> {{requirement.due_date | date('%B %d, %Y')}}<br>
+          <strong>Days Overdue:</strong> {{days_overdue}}
+        </div>
+
+        <p>Management attention is required to resolve this compliance issue.</p>
+
+        <p style="margin-top: 20px;">
+          <a href="{{app_url}}/requirements/{{requirement.id}}"
+             style="background: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Review Requirement
+          </a>
+        </p>
+      </body>
+      </html>
+
+  - code: coi_compliance_confirmed
+    name: COI Compliance Confirmed
+    notification_type: status_change
+    channel: email
+    subject: "✅ COI Verified - {{entity.name}}"
+    body: |
+      <html>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Hello {{user.first_name}},</p>
+
+        <p>Good news! The Certificate of Insurance for <strong>{{entity.name}}</strong>
+        has been verified and meets all requirements.</p>
+
+        <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #28a745;">
+          <strong>Vendor:</strong> {{entity.name}}<br>
+          <strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">COMPLIANT</span><br>
+          <strong>Coverage Valid Until:</strong> {{requirement.due_date | date('%B %d, %Y')}}
+        </div>
+
+        <p>No action is required at this time. You will be notified when the certificate
+        approaches its expiration date.</p>
+      </body>
+      </html>
