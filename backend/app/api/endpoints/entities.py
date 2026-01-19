@@ -1,19 +1,86 @@
 """Entity management endpoints."""
 from datetime import datetime
+import logging
 from typing import Any, Optional
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.config.database import get_db
 from app.models.entity import Entity, EntityType, EntityStatus
+from app.models.account import Account
 from app.models.user import User
 from app.api.endpoints.auth import get_current_active_user
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
+
+
+# ----- CRM Sync Helper -----
+
+def trigger_crm_sync(account_id: uuid.UUID, entity_id: uuid.UUID, operation: str):
+    """
+    Background task to sync entity to CRM.
+
+    This runs after entity create/update operations.
+    """
+    from app.config.database import SessionLocal
+    from app.services.crm import get_crm_service
+    from app.models.crm_sync import CRMSyncLog, SyncDirection, SyncOperation, SyncStatus
+    import time
+
+    db = SessionLocal()
+    try:
+        account = db.query(Account).filter(Account.id == account_id).first()
+        entity = db.query(Entity).filter(Entity.id == entity_id).first()
+
+        if not account or not entity:
+            return
+
+        crm_service = get_crm_service(account)
+
+        if not crm_service.is_configured():
+            return
+
+        start_time = time.time()
+        result = crm_service.sync_entity(entity, operation=operation)
+        duration_ms = int((time.time() - start_time) * 1000)
+
+        # Update external_id if created
+        if result.get("success") and result.get("external_id"):
+            entity.external_id = result["external_id"]
+            entity.external_source = crm_service.provider
+            db.commit()
+
+        # Log the sync operation
+        log = CRMSyncLog(
+            account_id=account_id,
+            entity_id=entity_id,
+            direction=SyncDirection.PUSH.value,
+            operation=result.get("operation", operation),
+            provider=crm_service.provider,
+            request_data=crm_service.map_entity_to_crm(entity),
+            response_data=result,
+            status=SyncStatus.SUCCESS.value if result.get("success") else SyncStatus.FAILED.value,
+            error_message=result.get("error") if not result.get("success") else None,
+            external_id=entity.external_id,
+            duration_ms=duration_ms,
+        )
+        db.add(log)
+        db.commit()
+
+        if result.get("success"):
+            logger.info(f"CRM sync successful for entity {entity_id}")
+        else:
+            logger.warning(f"CRM sync failed for entity {entity_id}: {result.get('error')}")
+
+    except Exception as e:
+        logger.error(f"CRM sync error for entity {entity_id}: {e}")
+    finally:
+        db.close()
 
 
 # Pydantic schemas
@@ -136,6 +203,7 @@ async def list_entities(
 @router.post("", response_model=EntityResponse, status_code=status.HTTP_201_CREATED)
 async def create_entity(
     entity_data: EntityCreate,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -163,6 +231,14 @@ async def create_entity(
     db.add(entity)
     db.commit()
     db.refresh(entity)
+
+    # Trigger CRM sync in background
+    background_tasks.add_task(
+        trigger_crm_sync,
+        current_user.account_id,
+        entity.id,
+        "create",
+    )
 
     return entity
 
@@ -192,6 +268,7 @@ async def get_entity(
 async def update_entity(
     entity_id: uuid.UUID,
     entity_data: EntityUpdate,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -214,6 +291,14 @@ async def update_entity(
 
     db.commit()
     db.refresh(entity)
+
+    # Trigger CRM sync in background
+    background_tasks.add_task(
+        trigger_crm_sync,
+        current_user.account_id,
+        entity.id,
+        "update",
+    )
 
     return entity
 

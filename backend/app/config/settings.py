@@ -73,6 +73,15 @@ class Settings(BaseSettings):
     # Niche Configuration
     niches_config_path: str = "./configs/niches"
 
+    # CRM Integration
+    integration_secrets_key: Optional[str] = None  # Key for encrypting API keys in DB
+    api_base_url: str = "http://localhost:8000"  # Base URL for webhook URLs
+
+    # HubSpot OAuth (optional, for OAuth flow instead of API keys)
+    hubspot_client_id: Optional[str] = None
+    hubspot_client_secret: Optional[str] = None
+    hubspot_oauth_redirect_uri: str = "http://localhost:8000/api/v1/integrations/hubspot/oauth/callback"
+
 
 @lru_cache
 def get_settings() -> Settings:

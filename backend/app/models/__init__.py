@@ -7,6 +7,7 @@ from .requirement import Requirement, RequirementType
 from .document import Document, DocumentType
 from .notification import Notification
 from .audit_log import AuditLog
+from .crm_sync import CRMSyncLog, SyncDirection, SyncOperation, SyncStatus
 
 __all__ = [
     "Base",
@@ -20,4 +21,8 @@ __all__ = [
     "DocumentType",
     "Notification",
     "AuditLog",
+    "CRMSyncLog",
+    "SyncDirection",
+    "SyncOperation",
+    "SyncStatus",
 ]

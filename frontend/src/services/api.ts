@@ -293,6 +293,116 @@ export const documentsApi = {
   },
 }
 
+// Integrations API
+export interface IntegrationSettings {
+  provider: string | null
+  enabled: boolean
+  sync_direction: string
+  hubspot: {
+    api_key: string | null
+    oauth_token: string | null
+    portal_id: string | null
+    object_type: string
+    has_credentials: boolean
+  } | null
+  zapier: {
+    webhook_url_entity_created: string | null
+    webhook_url_entity_updated: string | null
+    webhook_url_compliance_changed: string | null
+    webhook_secret: string | null
+    inbound_webhook_url: string
+  } | null
+  field_mapping: Record<string, string>
+  last_sync_at: string | null
+  last_sync_status: string | null
+}
+
+export interface ConnectionTestResult {
+  success: boolean
+  message: string
+  provider: string | null
+  details: Record<string, unknown> | null
+}
+
+export interface SyncResult {
+  success: boolean
+  synced_count: number
+  failed_count: number
+  errors: string[]
+}
+
+export interface SyncLog {
+  id: string
+  entity_id: string | null
+  direction: string
+  operation: string
+  provider: string
+  external_id: string | null
+  status: string
+  error_message: string | null
+  duration_ms: number | null
+  created_at: string
+}
+
+export const integrationsApi = {
+  getSettings: async (): Promise<IntegrationSettings> => {
+    const response = await apiClient.get('/integrations/settings')
+    return response.data
+  },
+
+  updateSettings: async (settings: Partial<{
+    provider: string
+    enabled: boolean
+    sync_direction: string
+    hubspot: {
+      api_key?: string
+      oauth_token?: string
+      portal_id?: string
+      object_type?: string
+    }
+    zapier: {
+      webhook_url_entity_created?: string
+      webhook_url_entity_updated?: string
+      webhook_url_compliance_changed?: string
+      webhook_secret?: string
+    }
+    field_mapping: Record<string, string>
+  }>): Promise<IntegrationSettings> => {
+    const response = await apiClient.put('/integrations/settings', settings)
+    return response.data
+  },
+
+  testConnection: async (): Promise<ConnectionTestResult> => {
+    const response = await apiClient.post('/integrations/test-connection')
+    return response.data
+  },
+
+  getHubSpotAuthUrl: async (): Promise<{ url: string }> => {
+    const response = await apiClient.get('/integrations/hubspot/oauth/authorize')
+    return response.data
+  },
+
+  pushToCRM: async (entityIds?: string[]): Promise<SyncResult> => {
+    const response = await apiClient.post('/integrations/sync/push', { entity_ids: entityIds })
+    return response.data
+  },
+
+  syncEntity: async (entityId: string): Promise<SyncResult> => {
+    const response = await apiClient.post(`/integrations/sync/entity/${entityId}`)
+    return response.data
+  },
+
+  getSyncLogs: async (params?: {
+    page?: number
+    page_size?: number
+    status?: string
+    provider?: string
+  }): Promise<PaginatedResponse<SyncLog>> => {
+    const response = await apiClient.get('/integrations/sync-logs', { params })
+    return response.data
+  },
+}
+
 // Notifications API
 export const notificationsApi = {
   list: async (params?: {

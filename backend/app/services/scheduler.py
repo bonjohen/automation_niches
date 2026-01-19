@@ -45,6 +45,14 @@ class TaskScheduler:
             replace_existing=True,
         )
 
+        # Schedule CRM compliance sync hourly (at :30)
+        self.scheduler.add_job(
+            self._sync_crm_compliance,
+            CronTrigger(minute=30),
+            id="sync_crm_compliance",
+            replace_existing=True,
+        )
+
         self.scheduler.start()
         self._is_running = True
         print(f"[{datetime.now()}] Task scheduler started")
@@ -62,6 +70,7 @@ class TaskScheduler:
             "generate_notifications": self._generate_notifications,
             "process_notifications": self._process_notifications,
             "update_statuses": self._update_requirement_statuses,
+            "sync_crm_compliance": self._sync_crm_compliance,
         }
         task = tasks.get(task_name)
         if task:
@@ -151,6 +160,82 @@ class TaskScheduler:
 
         except Exception as e:
             print(f"[{datetime.now()}] Error updating statuses: {e}")
+            db.rollback()
+        finally:
+            db.close()
+
+    def _sync_crm_compliance(self):
+        """Push compliance status updates to CRM for all accounts with sync enabled."""
+        from app.models.account import Account
+        from app.models.entity import Entity
+        from app.models.crm_sync import CRMSyncLog, SyncDirection, SyncOperation, SyncStatus
+        from app.services.crm import get_crm_service
+        import time
+
+        db = SessionLocal()
+        try:
+            # Get accounts with CRM sync enabled
+            accounts = db.query(Account).filter(Account.is_active == True).all()
+
+            total_synced = 0
+            total_failed = 0
+
+            for account in accounts:
+                crm_service = get_crm_service(account)
+
+                # Skip if CRM not configured
+                if not crm_service.is_configured():
+                    continue
+
+                # Get entities with external_id (already synced to CRM)
+                entities = db.query(Entity).filter(
+                    Entity.account_id == account.id,
+                    Entity.external_id.isnot(None),
+                ).all()
+
+                for entity in entities:
+                    start_time = time.time()
+                    result = crm_service.push_entity_compliance(entity)
+                    duration_ms = int((time.time() - start_time) * 1000)
+
+                    if result.get("success"):
+                        total_synced += 1
+                    else:
+                        total_failed += 1
+
+                    # Log the sync
+                    log = CRMSyncLog(
+                        account_id=account.id,
+                        entity_id=entity.id,
+                        direction=SyncDirection.PUSH.value,
+                        operation=SyncOperation.COMPLIANCE_PUSH.value,
+                        provider=crm_service.provider,
+                        request_data=crm_service._calculate_compliance_status(entity),
+                        response_data=result,
+                        status=SyncStatus.SUCCESS.value if result.get("success") else SyncStatus.FAILED.value,
+                        error_message=result.get("error") if not result.get("success") else None,
+                        external_id=entity.external_id,
+                        duration_ms=duration_ms,
+                    )
+                    db.add(log)
+
+                # Update last sync timestamp
+                if entities:
+                    crm_config = account.settings.get("crm", {})
+                    crm_config["last_sync_at"] = datetime.now().isoformat()
+                    crm_config["last_sync_status"] = "success" if total_failed == 0 else "partial"
+                    account.settings["crm"] = crm_config
+
+            db.commit()
+
+            if total_synced > 0 or total_failed > 0:
+                print(
+                    f"[{datetime.now()}] CRM compliance sync: "
+                    f"{total_synced} synced, {total_failed} failed"
+                )
+
+        except Exception as e:
+            print(f"[{datetime.now()}] Error in CRM compliance sync: {e}")
             db.rollback()
         finally:
             db.close()
