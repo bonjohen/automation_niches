@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Automatically detect timecard anomalies and payroll discrepancies before they become costly. AI-powered exception flagging and compliance checking.">
+  <title>Payroll Exception & Timecard Anomaly Detection - SMB Compliance Automation</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <a href="../index.html" class="nav__logo">
+        <svg class="nav__logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+        <span>ComplianceAuto</span>
+      </a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html" class="nav__link">Home</a></li>
+        <li><a href="../platform.html" class="nav__link">Platform</a></li>
+        <li><a href="index.html" class="nav__link">Solutions</a></li>
+        <li><a href="../contact.html" class="nav__link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="solution-hero">
+      <div class="container">
+        <div class="solution-hero__content">
+          <div class="solution-hero__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="solution-hero__text">
+            <h1>Payroll Exception & Timecard Anomaly Detection</h1>
+            <p>Automatically flag missing punches, excessive hours, potential time fraud, and compliance violations before payroll runs. Save time and reduce costly errors.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Pain Points
+        </h2>
+        <ul>
+          <li><strong>Manual timecard review is error-prone:</strong> In a typical payroll, there are often anomalies - someone forgets to clock out, or logs unusually high hours. Catching these exceptions by eyeballing timecards is very difficult at scale</li>
+          <li><strong>Time theft and buddy punching:</strong> Without automated detection, practices like employees clocking in for each other (buddy punching) or overstating hours may go unnoticed - inflating labor costs</li>
+          <li><strong>Compliance risks with labor laws:</strong> Missing and incorrect punches can lead to compliance issues like not paying overtime properly or not providing required breaks - manual oversight often fails to catch all exceptions</li>
+          <li><strong>Excessive time spent on corrections:</strong> HR and payroll admins spend significant time each pay period chasing down employees and managers for missing clock-outs, getting approvals for overtime edits, and recalculating totals</li>
+          <li><strong>Lack of real-time visibility:</strong> Managers often only see timecard data at period-end when it's almost too late to fix issues - there's no continuous monitoring in a manual process</li>
+        </ul>
+      </section>
+
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          Typical Workflow Today
+        </h2>
+        <ul>
+          <li>Employees clock in/out using a system or paper timesheets - at period end, managers or payroll admins review the collected times looking for obvious issues like missing entries or very high hour totals</li>
+          <li>The admin will reach out via email or phone to managers/employees to resolve flagged issues: "Sue didn't clock out on Tuesday, what time did she actually leave?"</li>
+          <li>If using spreadsheets, some might create formulas to sum hours and catch anything that fits expected totals - but anomaly detection is not there; anything that fits 80 hours in two weeks might pass even if distribution is odd</li>
+          <li>Once payroll is processed, any mistakes discovered afterward become adjustments on the next check or off-cycle payments - a reactive mode</li>
+          <li>The focus is typically on compliance in terms of totals - "did we pay OT if over 40?" - but anomalies like repeated rounding of time or pattern of early ins/late outs might not be noticed or addressed</li>
+        </ul>
+      </section>
+
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          Why It's Hard
+        </h2>
+        <ul>
+          <li><strong>High volume data:</strong> A company with 100 non-exempt employees might have 1,000+ time entries per week - checking each for correctness by hand is impractical; humans can't effectively filter noise from genuine exceptions at that scale</li>
+          <li><strong>Variety of anomalies:</strong> Issues can range from missing punches, to unapproved overtime, to potential time fraud - a manual process might catch missing punches but not subtle trends like "this employee always clocks in 5 minutes early"</li>
+          <li><strong>Rules complexity:</strong> Setting up all relevant rules in one's head is complex - different overtime rules, break rules, etc. - without systematic checks, implicit bias or randomness dictates which anomalies get attention</li>
+          <li><strong>Human fallibility and bias:</strong> A reviewer might unconsciously assume things are fine if totals look normal, or they might focus on employees they suspect and overlook others - no comprehensive approach</li>
+          <li><strong>Time constraints:</strong> Payroll processing is under time pressure (you have to get checks out on schedule) - this means any complicated investigation into anomalies often gets pushed off, potentially never happening</li>
+        </ul>
+      </section>
+
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          How Automation Helps
+        </h2>
+        <ul>
+          <li><strong>Automated timecard validation rules:</strong> Modern time & attendance systems have configurable rules engines that automatically flag early, late, missing punches, long shifts, and other predefined exceptions in real-time</li>
+          <li><strong>AI-driven anomaly detection:</strong> Beyond rigid rules, some systems use AI to learn patterns of normal hours for each employee or role and then spot deviations - catching subtle anomalies that rigid rules might miss</li>
+          <li><strong>Real-time alerts to managers:</strong> Instead of HR chasing down issues after the pay period, automation can send immediate alerts to supervisors when an exception occurs - "John missed a clock-out today, please confirm his end time"</li>
+          <li><strong>Automated overtime and compliance calculations:</strong> The system will automatically calculate overtime, double time, and break penalties according to configured labor laws - alerting if a timecard violates a rule</li>
+          <li><strong>Exception-based approval workflow:</strong> Automation flips the review process - managers only need to review and approve flagged exceptions rather than poring over every entry, saving time and reducing errors</li>
+          <li><strong>Fraud prevention measures:</strong> Systems can require photo verification on clock-in (if using mobile app) or use geofencing to ensure employees are at the correct location - directly blocking common fraud tactics</li>
+          <li><strong>Analytical reporting:</strong> Over time, the system can produce reports on attendance and payroll exceptions - e.g., "Department A has 20% more exceptions than Department B" - highlighting systemic issues or training needs</li>
+          <li><strong>Integrated payroll processing:</strong> When anomalies are resolved promptly, payroll can be processed faster and with confidence - data flows from time tracking to payroll automatically, reducing manual entry errors</li>
+          <li><strong>Employee transparency and trust:</strong> Some automation allows employees to see their own hours accruing and any flags - they can proactively fix issues, reducing disputes on payday</li>
+          <li><strong>Auditable trail and security:</strong> Every correction or approval is logged (who did it, when) - this audit trail is great for internal audits or labor inspections, showing you have controls in place</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to Eliminate Payroll Headaches?</h2>
+        <p>See how automated exception detection can save time, reduce errors, and ensure compliance.</p>
+        <a href="../contact.html" class="btn btn--secondary btn--lg">Request Demo</a>
+      </div>
+    </section>
+
+    <section class="related-solutions">
+      <div class="container">
+        <h3>Related Solutions</h3>
+        <div class="grid grid--3">
+          <a href="workers-comp.html" class="card">
+            <h4>Workers' Comp Audit Prep</h4>
+            <p>Automate payroll classification and documentation for workers' comp audits.</p>
+          </a>
+          <a href="contract-renewal.html" class="card">
+            <h4>Customer Contract Renewal</h4>
+            <p>Track contract expirations and automate renewal notifications.</p>
+          </a>
+          <a href="business-license.html" class="card">
+            <h4>Business License Tracking</h4>
+            <p>Manage business licenses and permits across multiple jurisdictions.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="../index.html" class="footer__logo">
+            <svg class="footer__logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>ComplianceAuto</span>
+          </a>
+          <p class="footer__tagline">AI-powered compliance automation for small and medium businesses.</p>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Platform</h4>
+          <ul>
+            <li><a href="../platform.html">Features</a></li>
+            <li><a href="../platform.html#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Solutions</h4>
+          <ul>
+            <li><a href="index.html">All Solutions</a></li>
+            <li><a href="fleet-compliance.html">Fleet Compliance</a></li>
+            <li><a href="coi-tracking.html">COI Tracking</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Company</h4>
+          <ul>
+            <li><a href="../contact.html">Contact Us</a></li>
+            <li><a href="../contact.html">Request Demo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2024 ComplianceAuto. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

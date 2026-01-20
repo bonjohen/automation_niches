@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Analyze utility bills for errors, overcharges, and recovery opportunities across multiple properties. Automated auditing saves 5-15% on utility costs.">
+  <title>Utility Bill Audit & Recovery - SMB Compliance Automation</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <a href="../index.html" class="nav__logo">
+        <svg class="nav__logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+        <span>ComplianceAuto</span>
+      </a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html" class="nav__link">Home</a></li>
+        <li><a href="../platform.html" class="nav__link">Platform</a></li>
+        <li><a href="index.html" class="nav__link">Solutions</a></li>
+        <li><a href="../contact.html" class="nav__link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="solution-hero">
+      <div class="container">
+        <div class="solution-hero__content">
+          <div class="solution-hero__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <div class="solution-hero__text">
+            <h1>Utility Bill Audit & Recovery for Commercial Properties</h1>
+            <p>Automatically analyze utility bills for billing errors, overcharges, and recovery opportunities. Companies may be overpaying utilities by 5-15% due to undetected mistakes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Pain Points
+        </h2>
+        <ul>
+          <li><strong>Hidden billing errors and overcharges:</strong> Utility invoices are complex with varying rates, fees, and meter readings - incorrect meter readings, wrong rate tariffs, and duplicate bills go unnoticed, silently draining budgets</li>
+          <li><strong>Sheer volume and data overload:</strong> A commercial portfolio might receive hundreds of utility bills (electric, water, gas, waste) every month - processing these by hand is beyond an AP clerk's capacity</li>
+          <li><strong>Fragmented utility accounts:</strong> Multi-site businesses have accounts across different utility providers, each with its own billing format and cycle - consolidating data for analysis is nearly impossible manually</li>
+          <li><strong>Manual audits are reactive and slow:</strong> Traditional utility audits involve sampling bills or hiring consultants - by the time overbilling is discovered, months of lost money may be unrecoverable</li>
+          <li><strong>Human error and missed deadlines:</strong> Manually processing bills leads to mis-entering amounts, overlooking due dates, or misclassifying expenses - leading to late fees or unintended service disconnection</li>
+        </ul>
+      </section>
+
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          Typical Workflow Today
+        </h2>
+        <ul>
+          <li>Utility bills arrive by mail to each site or by email to corporate - staff collects them and sends copies to a central accounting person</li>
+          <li>That person codes each bill to the correct property or account in the accounting system and schedules it for payment</li>
+          <li>Review is minimal: they might compare the amount to last month's bill to see if it's in line - smaller variances or incremental issues may not be noticed</li>
+          <li>If the company does attempt a detailed audit, it's usually in the form of an Excel spreadsheet where they manually key in usage and cost each month to look for trends</li>
+          <li>Tariff analysis (ensuring the account is on the best rate plan) is rarely done by the SMB themselves - they often stick with whatever rate class the utility assigned</li>
+          <li>Recovery of money (pursuing refunds for billing errors) relies on vendors or happens long after the fact, if at all</li>
+        </ul>
+      </section>
+
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          Why It's Hard
+        </h2>
+        <ul>
+          <li><strong>Data complexity:</strong> Utility bills have many line items (supply, distribution, demand charge, power factor penalties, taxes) - understanding and verifying each requires specialized knowledge</li>
+          <li><strong>Time-consuming manual analysis:</strong> Thoroughly auditing a single bill might involve checking the meter reading, verifying the tariff rates, and ensuring no duplicate charges - impossible to do for every bill monthly</li>
+          <li><strong>Multiple systems and lack of consolidation:</strong> Without consolidating usage data, you can't easily detect patterns like "this building's electricity jumped 20% year-over-year"</li>
+          <li><strong>Infrequent attention:</strong> Utility costs are often considered a fixed cost and not actively managed - small leaks go unplugged for months or years</li>
+          <li><strong>Recovering money is difficult:</strong> Even when overbilling is found, dealing with utility companies to get a refund or credit can be a slow bureaucratic process many SMBs don't bother with</li>
+          <li><strong>Energy inefficiency unnoticed:</strong> Manual processes don't identify operational issues like equipment running 24/7 or peak demand spikes that could be reduced</li>
+        </ul>
+      </section>
+
+      <section class="content-section">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          How Automation Helps
+        </h2>
+        <ul>
+          <li><strong>Automated data capture:</strong> Import utility data directly via electronic data interchange or OCR from PDFs - capturing usage, demand, cost components, and dates with high accuracy</li>
+          <li><strong>Continuous auditing algorithms:</strong> As bills come in, the system automatically checks against rules: Is usage unusually high? Is the correct rate schedule applied? Are there duplicate meter readings? Bills that fail audits are flagged for review before paying</li>
+          <li><strong>Real-time anomaly detection:</strong> Leverage historical data and AI to detect subtler trends like steady month-over-month increases in base load or abnormal weekend usage, alerting management early</li>
+          <li><strong>Automated rate and tariff analysis:</strong> Some advanced systems integrate tariff databases to simulate what your bill should be under alternate tariffs and recommend rate plan changes for savings</li>
+          <li><strong>Centralized dashboard and reporting:</strong> A single dashboard view of all properties' utility metrics - energy per square foot, total spend vs budget, carbon footprint - enabling strategic decisions</li>
+          <li><strong>Exception-based workflow and recovery:</strong> Automation flips the process to exception management - 95% of bills that pass audit checks are auto-approved for payment while the 5% flagged are routed to a resolution workflow</li>
+          <li><strong>Cost recovery tracking:</strong> When errors are found and corrected, the system records the credit or refund, providing accountability and proof of the automation's value</li>
+          <li><strong>Integration with accounts payable:</strong> Once a bill is audited and approved, it flows directly into AP systems, reducing late payments and eliminating transcription mistakes</li>
+          <li><strong>Energy usage insights and sustainability:</strong> Beyond cost, automation identifies energy inefficiencies and supports sustainability reporting by calculating total kWh and carbon emissions</li>
+          <li><strong>Peace of mind:</strong> Finance teams can trust that utility costs are under control without lying awake wondering if they missed a huge leak or billing error</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to Stop Overpaying for Utilities?</h2>
+        <p>See how automated utility bill auditing can recover lost dollars and control energy costs across your properties.</p>
+        <a href="../contact.html" class="btn btn--secondary btn--lg">Request Demo</a>
+      </div>
+    </section>
+
+    <section class="related-solutions">
+      <div class="container">
+        <h3>Related Solutions</h3>
+        <div class="grid grid--3">
+          <a href="lease-management.html" class="card">
+            <h4>Commercial Lease Abstraction</h4>
+            <p>Extract key terms from lease documents and track critical dates automatically.</p>
+          </a>
+          <a href="environmental-compliance.html" class="card">
+            <h4>Environmental Compliance Logs</h4>
+            <p>Maintain EPA and state environmental compliance records with automated logging.</p>
+          </a>
+          <a href="equipment-maintenance.html" class="card">
+            <h4>Equipment Maintenance & Warranty</h4>
+            <p>Track maintenance schedules and warranty expirations for all equipment.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="../index.html" class="footer__logo">
+            <svg class="footer__logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>ComplianceAuto</span>
+          </a>
+          <p class="footer__tagline">AI-powered compliance automation for small and medium businesses.</p>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Platform</h4>
+          <ul>
+            <li><a href="../platform.html">Features</a></li>
+            <li><a href="../platform.html#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Solutions</h4>
+          <ul>
+            <li><a href="index.html">All Solutions</a></li>
+            <li><a href="fleet-compliance.html">Fleet Compliance</a></li>
+            <li><a href="coi-tracking.html">COI Tracking</a></li>
+          </ul>
+        </div>
+        <div class="footer__links">
+          <h4 class="footer__heading">Company</h4>
+          <ul>
+            <li><a href="../contact.html">Contact Us</a></li>
+            <li><a href="../contact.html">Request Demo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2024 ComplianceAuto. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI-powered compliance automation platform for small businesses. Automate document tracking, deadline alerts, and compliance workflows.">
+  <title>SMB Compliance Automation Platform | Automate Your Compliance Workflows</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 12l2 2 4-4"/>
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </span>
+        ComplianceAI
+      </a>
+      <nav class="nav">
+        <ul class="nav__links">
+          <li><a href="platform.html" class="nav__link">Platform</a></li>
+          <li><a href="solutions/index.html" class="nav__link">Solutions</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+        <a href="contact.html" class="btn btn--primary">Request Demo</a>
+        <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero section">
+      <div class="container">
+        <h1 class="hero__title">Stop Chasing Compliance Deadlines</h1>
+        <p class="hero__subtitle">
+          AI-powered automation for small businesses. Track documents, monitor expirations,
+          and stay audit-ready without the manual headaches.
+        </p>
+        <div class="hero__actions">
+          <a href="contact.html" class="btn btn--primary btn--large">Request a Demo</a>
+          <a href="solutions/index.html" class="btn btn--secondary btn--large">Explore Solutions</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section section--alt">
+      <div class="container">
+        <h2 class="text-center mb-4">The Hidden Cost of Manual Compliance</h2>
+        <p class="text-center text-muted mb-5" style="max-width: 700px; margin-left: auto; margin-right: auto;">
+          Small businesses lose thousands of dollars annually to missed deadlines,
+          expired certifications, and compliance violations that could have been prevented.
+        </p>
+        <!-- Scrolling Statistics Ticker -->
+        <div class="ticker-wrapper">
+          <div class="ticker-track" id="statsTicker">
+            <!-- Stat 1 -->
+            <div class="ticker-item">
+              <div class="ticker-value">$28,500</div>
+              <div class="ticker-label">Annual cost per employee for manual data entry</div>
+              <div class="ticker-tooltip">
+                <p>A 2025 survey by Parseur found that manual data entry tasks cost American companies an average of $28,500 per employee annually, including time spent transferring data from emails, PDFs, and scanned documents.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://parseur.com/blog/manual-data-entry-report', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Parseur
+                </button>
+              </div>
+            </div>
+            <!-- Stat 2 -->
+            <div class="ticker-item">
+              <div class="ticker-value">2.5 hrs/day</div>
+              <div class="ticker-label">Time knowledge workers spend searching for info</div>
+              <div class="ticker-tooltip">
+                <p>IDC research shows knowledge workers spend about 2.5 hours per day—roughly 30% of the workday—searching for information. McKinsey reports 9.3 hours per week on average gathering information.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://cottrillresearch.com/various-survey-statistics-workers-spend-too-much-time-searching-for-information/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  IDC / McKinsey
+                </button>
+              </div>
+            </div>
+            <!-- Stat 3 -->
+            <div class="ticker-item">
+              <div class="ticker-value">1-4%</div>
+              <div class="ticker-label">Manual data entry error rate</div>
+              <div class="ticker-tooltip">
+                <p>Studies show manual data entry has an error rate of 1-4%, while automated systems achieve 99.96%+ accuracy. For every 10,000 entries, humans make 100-400 errors versus 1-4 for automation.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.docuclipper.com/blog/data-entry-statistics/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  DocuClipper
+                </button>
+              </div>
+            </div>
+            <!-- Stat 4 -->
+            <div class="ticker-item">
+              <div class="ticker-value">$15-40</div>
+              <div class="ticker-label">Cost to process a single invoice manually</div>
+              <div class="ticker-tooltip">
+                <p>Gartner estimates manual invoice processing costs $12-40 per invoice. For a business processing 1,000 invoices monthly, that's up to $180,000 annually that automation could reduce by 60-80%.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://resolvepay.com/blog/13-statistics-that-quantify-cost-per-invoice-in-manual-vs-automated-flows', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Gartner / IOFM
+                </button>
+              </div>
+            </div>
+            <!-- Stat 5 -->
+            <div class="ticker-item">
+              <div class="ticker-value">$50,100</div>
+              <div class="ticker-label">Compliance cost per employee (small mfg)</div>
+              <div class="ticker-tooltip">
+                <p>The National Association of Manufacturers reports small manufacturers pay $50,100 per employee in compliance burden—meaning a 20-employee firm bears around $1 million in annual compliance costs.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://nam.org/regulatory-onslaught-costing-small-manufacturers-more-than-50000-per-employee-29236/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  NAM
+                </button>
+              </div>
+            </div>
+            <!-- Stat 6 -->
+            <div class="ticker-item">
+              <div class="ticker-value">51%</div>
+              <div class="ticker-label">SMBs say compliance hurts their growth</div>
+              <div class="ticker-tooltip">
+                <p>The U.S. Chamber of Commerce Small Business Index finds 51% of small businesses say regulatory compliance requirements negatively impact growth, with 47% saying they spend too much time on compliance.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.uschamber.com/small-business/small-businesses-are-spending-more-time-money-on-regulatory-compliance', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  U.S. Chamber
+                </button>
+              </div>
+            </div>
+            <!-- Stat 7 -->
+            <div class="ticker-item">
+              <div class="ticker-value">69%</div>
+              <div class="ticker-label">SMBs spend more on compliance than large firms</div>
+              <div class="ticker-tooltip">
+                <p>U.S. Chamber research shows 69% of small businesses spend more per employee to comply with regulations than larger competitors, creating an unfair competitive disadvantage.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.uschamber.com/small-business/small-businesses-are-spending-more-time-money-on-regulatory-compliance', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  U.S. Chamber
+                </button>
+              </div>
+            </div>
+            <!-- Stat 8 -->
+            <div class="ticker-item">
+              <div class="ticker-value">40%</div>
+              <div class="ticker-label">Small businesses incur IRS payroll penalties</div>
+              <div class="ticker-tooltip">
+                <p>According to the IRS, 40% of small businesses incur payroll penalties averaging $845 per year due to errors. The IRS penalized businesses over $13 billion in employment tax errors in a recent fiscal year.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.hrdive.com/news/employers-make-15-corrections-per-pay-period-on-average-costing-thousands/640276/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  IRS / HR Dive
+                </button>
+              </div>
+            </div>
+            <!-- Stat 9 -->
+            <div class="ticker-item">
+              <div class="ticker-value">$291</div>
+              <div class="ticker-label">Cost to fix each payroll error</div>
+              <div class="ticker-tooltip">
+                <p>EY found companies average 15 payroll corrections per pay period at $291 each. For a 1,000-employee company, fixing payroll errors could cost up to $922,131 annually.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.hrdive.com/news/employers-make-15-corrections-per-pay-period-on-average-costing-thousands/640276/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  IRS / HR Dive
+                </button>
+              </div>
+            </div>
+            <!-- Stat 10 -->
+            <div class="ticker-item">
+              <div class="ticker-value">49%</div>
+              <div class="ticker-label">Employees job hunt after 2 payroll mistakes</div>
+              <div class="ticker-tooltip">
+                <p>The Workforce Institute at Kronos found 49% of employees start looking for a new job after just two payroll mistakes. With 64% of Americans living paycheck to paycheck, errors are not easily forgiven.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.paycom.com/resources/blog/payroll-errors-2026/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Kronos
+                </button>
+              </div>
+            </div>
+            <!-- Stat 11 -->
+            <div class="ticker-item">
+              <div class="ticker-value">70%</div>
+              <div class="ticker-label">COIs are non-compliant initially</div>
+              <div class="ticker-tooltip">
+                <p>Research shows 70% of certificates of insurance are non-compliant initially, requiring about three follow-ups to achieve full compliance. Organizations spend 8-12 hours per week—500 hours annually—chasing COIs.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.expirationreminder.com/blog/insurance-certificate-tracking-centralize-cois', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Vertafore
+                </button>
+              </div>
+            </div>
+            <!-- Stat 12 -->
+            <div class="ticker-item">
+              <div class="ticker-value">500 hrs/yr</div>
+              <div class="ticker-label">Time spent chasing insurance certificates</div>
+              <div class="ticker-tooltip">
+                <p>According to a Vertafore industry report, organizations spend 8-12 hours per week chasing down and verifying certificates of insurance—roughly 500 hours annually that could be spent on strategic work.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.expirationreminder.com/blog/coi-tracking-checklist-risk-managers', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Vertafore
+                </button>
+              </div>
+            </div>
+            <!-- Stat 13 -->
+            <div class="ticker-item">
+              <div class="ticker-value">5-15%</div>
+              <div class="ticker-label">Utility billing overcharges</div>
+              <div class="ticker-tooltip">
+                <p>UtiliSave reports inaccurate utility billing data leads to overcharges of 5-15% annually. Common errors include wrong rate classifications, meter reading mistakes, and miscalculated demand charges.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://utilisave.com/top-five-energy-bill-errors-hurt-large-energy-consumers/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  UtiliSave
+                </button>
+              </div>
+            </div>
+            <!-- Stat 14 -->
+            <div class="ticker-item">
+              <div class="ticker-value">150-200%</div>
+              <div class="ticker-label">Holdover rent penalty for missed deadlines</div>
+              <div class="ticker-tooltip">
+                <p>Missing a lease move-out or renewal deadline can trigger holdover penalties of 150-200% of base rent. One missed renewal notice on a 50,000 SF space could mean $450,000/year in unplanned rent increases.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.reoptimizer.com/never-miss-a-key-lease-date-again-avoid-hidden-costs-in-your-real-estate-portfolio/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  ReOptimizer
+                </button>
+              </div>
+            </div>
+            <!-- Stat 15 -->
+            <div class="ticker-item">
+              <div class="ticker-value">10-15%</div>
+              <div class="ticker-label">Better terms with proactive lease management</div>
+              <div class="ticker-tooltip">
+                <p>Companies that proactively manage lease critical dates secure 10-15% better terms than those negotiating under deadline pressure. Without tracking, companies typically overpay 2-5% annually on rent.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.occupier.com/blog/critical-date-management/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Occupier
+                </button>
+              </div>
+            </div>
+            <!-- Stat 16 -->
+            <div class="ticker-item">
+              <div class="ticker-value">94%</div>
+              <div class="ticker-label">Audited trucking companies have violations</div>
+              <div class="ticker-tooltip">
+                <p>According to FMCSA, 94% of audited trucking companies had violations and more than 25% were fined. Hours of Service violations alone can cost up to $16,000 per violation.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.simplyfleet.app/blog/non-compliance-with-fmcsa-dot', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  FMCSA
+                </button>
+              </div>
+            </div>
+            <!-- Stat 17 -->
+            <div class="ticker-item">
+              <div class="ticker-value">$16,000</div>
+              <div class="ticker-label">Max fine per DOT Hours of Service violation</div>
+              <div class="ticker-tooltip">
+                <p>DOT Hours of Service violations can cost up to $16,000 per violation. One interstate freight hauler was fined $135,390 for violations. Poor compliance scores also drive up insurance premiums.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.getclue.com/blog/what-happens-when-you-get-a-dot-violation', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  DOT
+                </button>
+              </div>
+            </div>
+            <!-- Stat 18 -->
+            <div class="ticker-item">
+              <div class="ticker-value">33-50%</div>
+              <div class="ticker-label">Workers' comp audits with overcharge errors</div>
+              <div class="ticker-tooltip">
+                <p>Premium recovery specialists report finding significant errors in one-third to one-half of workers' compensation audits they review. Overcharges often run tens of thousands of dollars and repeat year after year.</p>
+                <button class="copy-link-btn" onclick="copySourceLink('https://www.cutcomp.com/', this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  CutComp
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center text-muted mt-3" style="font-size: 0.875rem;">Hover over any statistic for source details</p>
+      </div>
+    </section>
+
+    <!-- Platform Features -->
+    <section class="section">
+      <div class="container">
+        <h2 class="text-center mb-3">One Platform, Complete Compliance Control</h2>
+        <p class="text-center text-muted mb-5" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+          Our AI-powered platform handles the heavy lifting so you can focus on growing your business.
+        </p>
+        <div class="features">
+          <a href="features/ai-document-processing.html" class="feature feature--clickable">
+            <div class="feature__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <path d="M14 2v6h6"/>
+                <path d="M16 13H8"/>
+                <path d="M16 17H8"/>
+                <path d="M10 9H8"/>
+              </svg>
+            </div>
+            <h3 class="feature__title">AI Document Processing</h3>
+            <p class="feature__description">
+              Upload documents and let AI extract key data automatically.
+              Certificates, contracts, and compliance docs processed in seconds.
+            </p>
+            <span class="feature__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+          <a href="features/smart-alerts.html" class="feature feature--clickable">
+            <div class="feature__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 01-3.46 0"/>
+              </svg>
+            </div>
+            <h3 class="feature__title">Smart Alerts</h3>
+            <p class="feature__description">
+              Never miss a deadline again. Automated reminders sent 60, 30, 14, and 7 days
+              before expirations with escalation workflows.
+            </p>
+            <span class="feature__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+          <a href="features/dashboard.html" class="feature feature--clickable">
+            <div class="feature__icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M3 9h18"/>
+                <path d="M9 21V9"/>
+              </svg>
+            </div>
+            <h3 class="feature__title">Real-Time Dashboard</h3>
+            <p class="feature__description">
+              See your entire compliance status at a glance. Track what's current,
+              expiring soon, and overdue across all your vendors and documents.
+            </p>
+            <span class="feature__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solutions Grid -->
+    <section class="section section--alt" id="solutions">
+      <div class="container">
+        <h2 class="text-center mb-3">Automation Solutions for Every Compliance Need</h2>
+        <p class="text-center text-muted mb-5" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+          From insurance certificates to utility audits, we automate the compliance workflows
+          that drain your time and resources.
+        </p>
+        <div class="grid grid--3">
+          <!-- Solution 1 -->
+          <a href="solutions/fleet-compliance.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"/>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                <circle cx="5.5" cy="18.5" r="2.5"/>
+                <circle cx="18.5" cy="18.5" r="2.5"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Fleet Compliance</h3>
+            <p class="card__description">Track driver qualifications, vehicle inspections, CDLs, and DOT requirements.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 2 -->
+          <a href="solutions/lease-management.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Lease Management</h3>
+            <p class="card__description">Extract lease terms, track renewals, and monitor rent escalations automatically.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 3 -->
+          <a href="solutions/lien-waiver.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <path d="M14 2v6h6"/>
+                <path d="M12 18v-6"/>
+                <path d="M9 15h6"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Lien Waiver Automation</h3>
+            <p class="card__description">Automate lien waivers and pay applications to accelerate construction payments.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 4 -->
+          <a href="solutions/workers-comp.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <path d="M20 8v6"/>
+                <path d="M23 11h-6"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Workers' Comp Audit</h3>
+            <p class="card__description">Prepare for insurance audits with automated payroll and class code tracking.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 5 -->
+          <a href="solutions/permit-inspection.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Permit & Inspection</h3>
+            <p class="card__description">Coordinate permits and inspections across multiple jurisdictions and agencies.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 6 -->
+          <a href="solutions/coi-tracking.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            </div>
+            <h3 class="card__title">COI Tracking</h3>
+            <p class="card__description">Automate vendor certificate of insurance collection, verification, and renewal.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 7 -->
+          <a href="solutions/utility-audit.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Utility Bill Audit</h3>
+            <p class="card__description">Detect billing errors, recover overcharges, and optimize energy costs.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 8 -->
+          <a href="solutions/environmental-compliance.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                <path d="M2 12h20"/>
+                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Environmental Logs</h3>
+            <p class="card__description">Maintain compliant environmental records with digital logging and alerts.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 9 -->
+          <a href="solutions/contract-renewal.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Contract Renewal</h3>
+            <p class="card__description">Track customer contracts, automate price escalations, and capture renewals.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 10 -->
+          <a href="solutions/equipment-maintenance.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Equipment Maintenance</h3>
+            <p class="card__description">Schedule preventive maintenance and track warranties across all assets.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 11 -->
+          <a href="solutions/payroll-exception.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Payroll Exception</h3>
+            <p class="card__description">Detect timecard anomalies, missing punches, and overtime violations in real-time.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 12 -->
+          <a href="solutions/regulatory-mail.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Regulatory Mail Intake</h3>
+            <p class="card__description">Centralize and route regulatory notices across multiple business locations.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 13 -->
+          <a href="solutions/business-license.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Business License</h3>
+            <p class="card__description">Track license renewals, filing requirements, and multi-jurisdiction compliance.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 14 -->
+          <a href="solutions/supplier-compliance.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                <path d="M16 3.13a4 4 0 010 7.75"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Supplier Compliance</h3>
+            <p class="card__description">Monitor supplier certifications, KPIs, and contract obligations automatically.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+
+          <!-- Solution 15 -->
+          <a href="solutions/grant-management.html" class="card card--clickable">
+            <div class="card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Grant & Rebate Deadlines</h3>
+            <p class="card__description">Never miss funding opportunities with deadline tracking and application management.</p>
+            <span class="card__link">Learn more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+        </div>
+        <div class="text-center mt-5">
+          <a href="solutions/index.html" class="btn btn--secondary">View All Solutions</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+      <div class="container">
+        <h2 class="text-center mb-3">How It Works</h2>
+        <p class="text-center text-muted mb-5" style="max-width: 500px; margin-left: auto; margin-right: auto;">
+          Get up and running in minutes, not months.
+        </p>
+        <div class="steps">
+          <div class="step">
+            <h4 class="step__title">Upload Documents</h4>
+            <p class="step__description">Drop your contracts, certificates, and compliance docs into the platform.</p>
+          </div>
+          <div class="step">
+            <h4 class="step__title">AI Extracts Data</h4>
+            <p class="step__description">Our AI reads and extracts key dates, amounts, and requirements automatically.</p>
+          </div>
+          <div class="step">
+            <h4 class="step__title">Track & Alert</h4>
+            <p class="step__description">The system monitors deadlines and sends proactive alerts before anything expires.</p>
+          </div>
+          <div class="step">
+            <h4 class="step__title">Stay Compliant</h4>
+            <p class="step__description">Your real-time dashboard shows exactly where you stand with every requirement.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to Automate Your Compliance?</h2>
+        <p>See how much time and money you could save with a personalized demo.</p>
+        <a href="contact.html" class="btn btn--secondary btn--large">Request Your Free Demo</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="logo">
+            <span class="logo__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"/>
+                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </span>
+            ComplianceAI
+          </a>
+          <p>AI-powered compliance automation for small businesses. Stop chasing deadlines and start growing your business.</p>
+        </div>
+        <div>
+          <h4 class="footer__title">Platform</h4>
+          <div class="footer__links">
+            <a href="platform.html">Features</a>
+            <a href="platform.html#how-it-works">How It Works</a>
+            <a href="contact.html">Pricing</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__title">Solutions</h4>
+          <div class="footer__links">
+            <a href="solutions/coi-tracking.html">COI Tracking</a>
+            <a href="solutions/fleet-compliance.html">Fleet Compliance</a>
+            <a href="solutions/lease-management.html">Lease Management</a>
+            <a href="solutions/index.html">All Solutions</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__title">Company</h4>
+          <div class="footer__links">
+            <a href="contact.html">Contact</a>
+            <a href="contact.html">Request Demo</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2024 ComplianceAI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
