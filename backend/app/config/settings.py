@@ -1,4 +1,5 @@
 """Application settings loaded from environment variables."""
+import os
 from functools import lru_cache
 from typing import Optional
 
@@ -24,8 +25,12 @@ class Settings(BaseSettings):
     api_prefix: str = "/api/v1"
     cors_origins: list[str] = ["http://localhost:3000"]
 
-    # Database
-    database_url: str = "postgresql://postgres:postgres@localhost:5432/compliance_db"
+    # Database - use SQLite for tests if ENVIRONMENT is "test"
+    database_url: str = (
+        "sqlite:///:memory:"
+        if os.environ.get("ENVIRONMENT") == "test"
+        else "postgresql://postgres:postgres@localhost:5432/compliance_db"
+    )
     database_echo: bool = False
 
     # Authentication

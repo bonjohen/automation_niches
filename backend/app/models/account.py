@@ -3,10 +3,10 @@ from typing import TYPE_CHECKING, Any, Optional
 import uuid
 
 from sqlalchemy import String, Boolean
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TimestampMixin, UUIDMixin
+from .base import Base, TimestampMixin, UUIDMixin, JSONB, UUID
 
 if TYPE_CHECKING:
     from .user import User

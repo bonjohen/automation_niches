@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING, Any, Optional
 import uuid
 
 from sqlalchemy import String, Boolean, DateTime, ForeignKey, Text, Integer, Float
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TimestampMixin, UUIDMixin
+from .base import Base, TimestampMixin, UUIDMixin, JSONB, UUID
 
 if TYPE_CHECKING:
     from .account import Account
@@ -173,7 +173,8 @@ class Document(Base, UUIDMixin, TimestampMixin):
     )
 
     # Metadata and tags
-    metadata: Mapped[dict[str, Any]] = mapped_column(
+    document_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata",  # Keep column name for DB compatibility
         JSONB,
         nullable=False,
         default=dict,

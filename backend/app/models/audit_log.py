@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING, Any, Optional
 import uuid
 
 from sqlalchemy import String, DateTime, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, UUIDMixin
+from .base import Base, UUIDMixin, JSONB, UUID
 
 if TYPE_CHECKING:
     from .user import User
@@ -96,7 +96,8 @@ class AuditLog(Base, UUIDMixin):
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # Metadata
-    metadata: Mapped[dict[str, Any]] = mapped_column(
+    log_metadata: Mapped[dict[str, Any]] = mapped_column(
+        "metadata",  # Keep column name for DB compatibility
         JSONB,
         nullable=False,
         default=dict,
