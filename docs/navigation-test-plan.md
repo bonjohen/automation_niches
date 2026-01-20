@@ -141,3 +141,78 @@ Verify related solutions sections link correctly.
 1. Form endpoint uses placeholder: `https://formspree.io/f/your-form-id`
 2. Email link: `demo@complianceauto.com` - verify correctness
 3. Verify all solution pages referenced actually exist
+
+---
+
+## Extended Test Results (2026-01-19)
+
+### Navigation Edge Cases
+- [x] Anchor links point to existing IDs - **PASS**
+- [x] No empty href links - **PASS**
+- [x] No duplicate IDs - **PASS**
+- [x] All images have src attributes - **PASS**
+- [x] No missing alt text - **PASS**
+
+### Visual/Layout Tests
+- [x] CSS variables defined (--primary, --secondary, --bg, etc.) - **PASS**
+- [x] No unexpected horizontal overflow - **PASS** (ticker overflow is intentional)
+- [x] Key elements visible with proper dimensions - **PASS**
+- [x] Fonts loaded successfully - **PASS**
+- [x] z-index stacking correct (header: 1000, tooltips: 1000) - **PASS**
+
+### Responsive Layout (375px mobile)
+- [x] Mobile nav toggle visible - **PASS**
+- [x] Nav links hidden by default - **PASS**
+- [x] Feature cards stack vertically - **PASS**
+- [ ] Touch targets >= 44x44px - **NEEDS ATTENTION**
+  - Copy source buttons are 34px tall (below 44px minimum)
+  - Nav toggle is 40x43px (slightly below minimum)
+
+### Interactive Elements
+- [x] Ticker animation running - **PASS** (90s duration)
+- [x] Ticker has 36 items (18 original + 18 clones) - **PASS**
+- [x] Smooth scroll enabled - **PASS**
+- [x] All buttons have cursor: pointer - **PASS**
+
+### Accessibility
+- [x] Document has DOCTYPE - **PASS**
+- [x] HTML lang attribute set (en) - **PASS**
+- [x] Meta viewport present - **PASS**
+- [x] Meta description present - **PASS**
+- [x] Semantic HTML used (header, main, footer, nav) - **PASS**
+- [x] Single h1 on homepage - **PASS**
+- [x] Proper heading hierarchy (h1: 1, h2: 5, h3: 18) - **PASS**
+- [x] All interactive elements have accessible names - **PASS**
+- [x] No positive tabindex values - **PASS**
+- [ ] Skip link present - **MISSING**
+
+### Form Accessibility (contact.html)
+- [x] All inputs have labels - **PASS**
+- [x] Required fields marked - **PASS**
+- [x] Submit button present with text - **PASS**
+- [x] Form has data-validate attribute - **PASS**
+
+### Performance
+- [x] DOM Content Loaded: 36ms - **EXCELLENT**
+- [x] Time to First Byte: 6ms - **EXCELLENT**
+- [x] DOM Interactive: 35ms - **EXCELLENT**
+- [x] Element count: 641 - **ACCEPTABLE**
+- [x] Max DOM depth: 10 - **GOOD**
+- [x] Single JS file (main.js) - **GOOD**
+- [x] Single CSS file (styles.css) - **GOOD**
+
+---
+
+## Recommendations
+
+### High Priority
+1. **Add skip link** for keyboard navigation accessibility
+2. **Increase touch target sizes** for copy source buttons (min 44x44px)
+
+### Medium Priority
+1. **Replace form endpoint placeholder** with actual Formspree ID
+2. **Verify email address** is correct and working
+
+### Low Priority
+1. Consider adding `rel="noopener"` to external links
+2. Add explicit width/height to any future images for CLS prevention
