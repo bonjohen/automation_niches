@@ -1,4 +1,4 @@
-# SMB Compliance Automation Platform - Project Task Tracker
+# DataJinn - Data Operations Platform - Project Task Tracker
 
 This document tracks all tasks by phase. Update status as items are completed and add new tasks as identified.
 
@@ -286,7 +286,7 @@ This document tracks all tasks by phase. Update status as items are completed an
 
 ## Key Decision Points Pending
 
-1. **Which niche to start with?**
+1. **Which vertical to start with?**
    - Recommendation: Vendor COI Tracking - clear scope, high demand
    - Status: ✅ DECIDED - Vendor COI Tracking selected
 
@@ -300,6 +300,9 @@ This document tracks all tasks by phase. Update status as items are completed an
 4. **Self-service vs. managed onboarding?**
    - Status: Awaiting decision
 
+5. **Platform positioning?**
+   - Status: ✅ DECIDED - Data Operations Platform (compliance as initial vertical)
+
 ---
 
 *Last Updated: 2026-01-19*
@@ -309,7 +312,7 @@ This document tracks all tasks by phase. Update status as items are completed an
 ## Completion Summary
 
 ### Phase 1 Progress: ~95% Complete
-- Niche selection: ✅ Vendor COI Tracking
+- Vertical selection: ✅ Vendor COI Tracking
 - Competitor research: ✅ Complete (competitor_analysis.md)
 - User stories: ✅ Complete (user_stories_coi_tracking.md)
 - Sample test data: ✅ Complete (sample_coi_data.json)
@@ -322,7 +325,7 @@ This document tracks all tasks by phase. Update status as items are completed an
 
 ### Phase 2 Progress: 100% Complete ✅
 - Database models: ✅ Complete
-- API endpoints: ✅ Complete (CRUD for entities, requirements, documents, notifications)
+- API endpoints: ✅ Complete (CRUD for entities, tasks, documents, notifications)
 - YAML config loader: ✅ Complete
 - Lookup table seeding: ✅ Complete (services/seeder.py - DatabaseSeeder class)
 - API docs: ✅ Auto-generated at /api/docs (OpenAPI/Swagger)
@@ -339,10 +342,10 @@ This document tracks all tasks by phase. Update status as items are completed an
 
 ### Phase 4 Progress: 100% Complete ✅
 - Login/signup pages: ✅ Complete (React, React Query, form validation)
-- Dashboard: ✅ Complete (compliance stats, charts, recent items)
-- Vendor management: ✅ Complete (list, detail, create, edit, delete)
+- Dashboard: ✅ Complete (status stats, charts, recent items)
+- Entity management: ✅ Complete (list, detail, create, edit, delete)
 - Document management: ✅ Complete (upload with drag-drop, list, detail with extracted data editing)
-- Requirements tracking: ✅ Complete (list with filters, detail with mark complete)
+- Task tracking: ✅ Complete (list with filters, detail with mark complete)
 - Notifications: ✅ Complete (list with filters, mark read, mark all read)
 - Layout components: ✅ Complete (Sidebar, Header, AuthenticatedLayout)
 
@@ -351,7 +354,7 @@ This document tracks all tasks by phase. Update status as items are completed an
 - HubSpot Connector: ✅ Complete (services/crm/hubspot.py - API v3, companies/contacts)
 - Zapier Connector: ✅ Complete (services/crm/zapier.py - webhooks in/out)
 - API Endpoints: ✅ Complete (api/endpoints/integrations.py - settings, sync, webhooks)
-- Background Sync: ✅ Complete (scheduler.py - hourly compliance push)
+- Background Sync: ✅ Complete (scheduler.py - hourly status push)
 - Entity Sync Triggers: ✅ Complete (entities.py - background tasks on create/update)
 - Frontend Settings UI: ✅ Complete (settings, integrations, hubspot, zapier, sync-history pages)
 - API Key Encryption: ✅ Complete (services/crm/encryption.py - Fernet)
@@ -371,3 +374,11 @@ This document tracks all tasks by phase. Update status as items are completed an
 - Minor response format mismatches in some endpoint tests
 
 ### Overall: Phases 1-6 complete, ready to proceed to Phase 7 (Beta Launch & Feedback)
+
+### Refactoring Notes (2026-01-19)
+- Platform repositioned from "Compliance Automation" to "Data Operations Platform"
+- Brand updated from DocuFlow to **DataJinn**
+- Frontend route changed: `/requirements` → `/tasks`
+- Status terminology: `compliant` → `current`, `expiring_soon` → `due_soon`, `non_compliant` → `action_required`
+- API summary endpoint keys updated to match new terminology
+- Compliance tracking remains as the initial vertical use case

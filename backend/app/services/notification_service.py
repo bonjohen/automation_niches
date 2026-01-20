@@ -58,9 +58,9 @@ class NotificationService:
                         Requirement.requirement_type_id == req_type.id,
                         Requirement.due_date == target_date,
                         Requirement.status.in_([
-                            RequirementStatus.COMPLIANT.value,
+                            RequirementStatus.CURRENT.value,
                             RequirementStatus.PENDING.value,
-                            RequirementStatus.EXPIRING_SOON.value,
+                            RequirementStatus.DUE_SOON.value,
                         ]),
                     ).all()
 
@@ -83,7 +83,7 @@ class NotificationService:
         overdue_requirements = self.db.query(Requirement).filter(
             Requirement.due_date < today,
             Requirement.status.notin_([
-                RequirementStatus.COMPLIANT.value,
+                RequirementStatus.CURRENT.value,
                 RequirementStatus.WAIVED.value,
             ]),
         ).all()

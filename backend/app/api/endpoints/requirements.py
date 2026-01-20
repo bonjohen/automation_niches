@@ -88,10 +88,11 @@ class RequirementListResponse(BaseModel):
     page_size: int
 
 
-class ComplianceSummary(BaseModel):
+class TaskSummary(BaseModel):
+    """Summary of task statuses (renamed from ComplianceSummary)."""
     total: int
-    compliant: int
-    expiring_soon: int
+    current: int       # was compliant
+    due_soon: int      # was expiring_soon
     expired: int
     pending: int
 
@@ -107,28 +108,28 @@ async def list_requirement_types(
     return types
 
 
-@router.get("/summary", response_model=ComplianceSummary)
-async def get_compliance_summary(
+@router.get("/summary", response_model=TaskSummary)
+async def get_task_summary(
     entity_id: Optional[uuid.UUID] = None,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """Get compliance summary statistics."""
+    """Get task summary statistics."""
     query = db.query(Requirement).filter(Requirement.account_id == current_user.account_id)
 
     if entity_id:
         query = query.filter(Requirement.entity_id == entity_id)
 
     total = query.count()
-    compliant = query.filter(Requirement.status == RequirementStatus.COMPLIANT.value).count()
-    expiring_soon = query.filter(Requirement.status == RequirementStatus.EXPIRING_SOON.value).count()
+    current = query.filter(Requirement.status == RequirementStatus.CURRENT.value).count()
+    due_soon = query.filter(Requirement.status == RequirementStatus.DUE_SOON.value).count()
     expired = query.filter(Requirement.status == RequirementStatus.EXPIRED.value).count()
     pending = query.filter(Requirement.status == RequirementStatus.PENDING.value).count()
 
-    return ComplianceSummary(
+    return TaskSummary(
         total=total,
-        compliant=compliant,
-        expiring_soon=expiring_soon,
+        current=current,
+        due_soon=due_soon,
         expired=expired,
         pending=pending,
     )
@@ -267,9 +268,9 @@ async def update_requirement(
     # Update fields
     update_data = req_data.model_dump(exclude_unset=True)
 
-    # Handle status change to completed
-    if "status" in update_data and update_data["status"] == RequirementStatus.COMPLIANT.value:
-        if requirement.status != RequirementStatus.COMPLIANT.value:
+    # Handle status change to completed (current)
+    if "status" in update_data and update_data["status"] == RequirementStatus.CURRENT.value:
+        if requirement.status != RequirementStatus.CURRENT.value:
             update_data["completed_date"] = date.today()
 
     for field, value in update_data.items():
@@ -309,7 +310,7 @@ async def mark_requirement_complete(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    """Mark a requirement as complete/compliant."""
+    """Mark a requirement/task as complete (current)."""
     requirement = db.query(Requirement).filter(
         Requirement.id == requirement_id,
         Requirement.account_id == current_user.account_id,
@@ -321,7 +322,7 @@ async def mark_requirement_complete(
             detail="Requirement not found",
         )
 
-    requirement.status = RequirementStatus.COMPLIANT.value
+    requirement.status = RequirementStatus.CURRENT.value
     requirement.completed_date = date.today()
     db.commit()
     db.refresh(requirement)

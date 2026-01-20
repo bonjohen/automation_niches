@@ -1,14 +1,16 @@
-# SMB Compliance Automation Platform - Summary
+# DataJinn - Data Operations Platform Summary
 
 ## Overview
 
-A unified AI-driven compliance automation platform for small businesses (10-50 employees) featuring:
+A unified AI-driven data operations platform for small businesses (10-50 employees) featuring:
 
 - **Canonical core schema** - Common data model + workflow engine
-- **YAML-configurable niche templates** - Industry-specific configurations
+- **YAML-configurable vertical templates** - Industry-specific configurations
 - **AI-powered document processing** - OCR + LLM extraction
 - **CRM connectivity** - Integration with existing systems
 - **White-label capability** - Customer branding support
+
+**Initial Vertical:** Compliance tracking (COI, licenses, permits, certifications)
 
 ---
 
@@ -28,17 +30,17 @@ A unified AI-driven compliance automation platform for small businesses (10-50 e
 - Account/Organization (multi-tenant)
 - User (auth, roles)
 - Entity (generic: Vendor, Vehicle, Property, Contract)
-- Requirement/Task (compliance items with due dates)
+- Task (tracked items with due dates and statuses)
 - Document (metadata + extracted data JSON)
 - Notification (scheduled alerts)
 - AuditLog (change tracking)
-- RequirementType/DocumentType (lookup tables from YAML)
+- TaskType/DocumentType (lookup tables from YAML)
 
 #### 1.3 YAML Template Structure
 **Sections to define:**
-- `niche` - name and description
+- `vertical` - name and description
 - `entity_types` - primary objects with custom fields
-- `requirement_types` - compliance tasks, frequencies, notification rules
+- `task_types` - tracked items, frequencies, notification rules
 - `document_types` - expected fields, AI extraction prompts
 - `workflow_rules` - conditional automations
 
@@ -61,7 +63,7 @@ A unified AI-driven compliance automation platform for small businesses (10-50 e
 
 #### 2.2 Core API Endpoints
 - `/api/entities` - generic entity management
-- `/api/requirements` - compliance task management
+- `/api/requirements` - task management (aliased as `/api/tasks`)
 - `/api/documents` - upload, list, retrieve
 - `/api/notifications` - alert management
 - Authentication middleware
@@ -103,7 +105,7 @@ A unified AI-driven compliance automation platform for small businesses (10-50 e
 
 #### 4.1 Core UI Components
 - Login/signup pages
-- Dashboard with compliance overview
+- Dashboard with operations overview
 - Entity list and detail views
 - Dynamic forms based on YAML entity_type fields
 
@@ -113,8 +115,8 @@ A unified AI-driven compliance automation platform for small businesses (10-50 e
 - Extracted data review/edit interface
 - Document preview
 
-#### 4.3 Compliance Tracking UI
-- Requirements list with status filters
+#### 4.3 Task Tracking UI
+- Tasks list with status filters
 - Calendar/timeline view of deadlines
 - Overdue alerts display
 - Mark complete functionality
@@ -139,7 +141,7 @@ A unified AI-driven compliance automation platform for small businesses (10-50 e
 
 #### 5.3 Data Sync
 - Bidirectional entity sync (Vendors/Contacts)
-- Push compliance status to CRM
+- Push task status to CRM
 - Pull contact updates from CRM
 
 ---
@@ -230,14 +232,14 @@ A unified AI-driven compliance automation platform for small businesses (10-50 e
 
 ---
 
-## Niche Expansion Template (Post-MVP)
+## Vertical Expansion Template (Post-MVP)
 
-For each new niche (Fleet Compliance, Lease Management, Workers Comp, etc.):
+For each new vertical (Fleet Compliance, Lease Management, Workers Comp, etc.):
 
-1. **Research Phase** - Analyze pain points, research regulations, gather sample documents
+1. **Research Phase** - Analyze pain points, research requirements, gather sample documents
 2. **Configuration Phase** - Write YAML template, create AI extraction prompts, define notification rules
 3. **Testing Phase** - Test with samples, validate extraction accuracy, user acceptance testing
-4. **Launch Phase** - Enable in production, market to niche-specific audience
+4. **Launch Phase** - Enable in production, market to vertical-specific audience
 
 ---
 
@@ -245,9 +247,9 @@ For each new niche (Fleet Compliance, Lease Management, Workers Comp, etc.):
 
 | Decision | Recommendation |
 |----------|----------------|
-| Which niche to start with? | Vendor COI Tracking (clear scope, high demand) |
+| Which vertical to start with? | Vendor COI Tracking (clear scope, high demand) |
 | Pricing model? | Free beta → subscription |
-| CRM integrations priority? | TBD |
+| CRM integrations priority? | HubSpot + Zapier (decided) |
 | Self-service vs. managed onboarding? | TBD |
 
 ---

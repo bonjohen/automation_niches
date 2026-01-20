@@ -66,7 +66,7 @@ export interface Entity {
   updated_at: string
 }
 
-export interface Requirement {
+export interface Task {
   id: string
   account_id: string
   entity_id: string
@@ -80,6 +80,9 @@ export interface Requirement {
   created_at: string
   updated_at: string
 }
+
+// Alias for backward compatibility
+export type Requirement = Task
 
 export interface Document {
   id: string
@@ -115,13 +118,16 @@ export interface PaginatedResponse<T> {
   page_size: number
 }
 
-export interface ComplianceSummary {
+export interface TaskSummary {
   total: number
-  compliant: number
-  expiring_soon: number
+  current: number
+  due_soon: number
   expired: number
   pending: number
 }
+
+// Alias for backward compatibility
+export type ComplianceSummary = TaskSummary
 
 // Auth API
 export const authApi = {
@@ -185,8 +191,8 @@ export const entitiesApi = {
   },
 }
 
-// Requirements API
-export const requirementsApi = {
+// Tasks API (formerly Requirements)
+export const tasksApi = {
   list: async (params?: {
     page?: number
     page_size?: number
@@ -195,22 +201,22 @@ export const requirementsApi = {
     priority?: string
     due_before?: string
     due_after?: string
-  }): Promise<PaginatedResponse<Requirement>> => {
+  }): Promise<PaginatedResponse<Task>> => {
     const response = await apiClient.get('/requirements', { params })
     return response.data
   },
 
-  get: async (id: string): Promise<Requirement> => {
+  get: async (id: string): Promise<Task> => {
     const response = await apiClient.get(`/requirements/${id}`)
     return response.data
   },
 
-  create: async (data: Partial<Requirement>): Promise<Requirement> => {
+  create: async (data: Partial<Task>): Promise<Task> => {
     const response = await apiClient.post('/requirements', data)
     return response.data
   },
 
-  update: async (id: string, data: Partial<Requirement>): Promise<Requirement> => {
+  update: async (id: string, data: Partial<Task>): Promise<Task> => {
     const response = await apiClient.patch(`/requirements/${id}`, data)
     return response.data
   },
@@ -219,12 +225,12 @@ export const requirementsApi = {
     await apiClient.delete(`/requirements/${id}`)
   },
 
-  complete: async (id: string): Promise<Requirement> => {
+  complete: async (id: string): Promise<Task> => {
     const response = await apiClient.post(`/requirements/${id}/complete`)
     return response.data
   },
 
-  getSummary: async (entityId?: string): Promise<ComplianceSummary> => {
+  getSummary: async (entityId?: string): Promise<TaskSummary> => {
     const response = await apiClient.get('/requirements/summary', {
       params: entityId ? { entity_id: entityId } : undefined,
     })
@@ -236,6 +242,9 @@ export const requirementsApi = {
     return response.data
   },
 }
+
+// Alias for backward compatibility
+export const requirementsApi = tasksApi
 
 // Documents API
 export const documentsApi = {

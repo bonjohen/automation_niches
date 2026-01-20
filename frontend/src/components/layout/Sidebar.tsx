@@ -10,15 +10,15 @@ import {
   Upload,
   Bell,
   Settings,
-  ShieldCheck,
+  Layers,
   LogOut,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Vendors', href: '/vendors', icon: Building2 },
-  { name: 'Requirements', href: '/requirements', icon: FileCheck },
+  { name: 'Entities', href: '/vendors', icon: Building2 },
+  { name: 'Tasks', href: '/tasks', icon: FileCheck },
   { name: 'Documents', href: '/documents', icon: Upload },
   { name: 'Notifications', href: '/notifications', icon: Bell },
 ]
@@ -35,8 +35,8 @@ export function Sidebar() {
     <div className="flex h-full w-64 flex-col bg-gray-900">
       {/* Logo */}
       <div className="flex h-16 shrink-0 items-center px-6">
-        <ShieldCheck className="h-8 w-8 text-primary-500" />
-        <span className="ml-2 text-xl font-bold text-white">Compliance</span>
+        <Layers className="h-8 w-8 text-primary-500" />
+        <span className="ml-2 text-xl font-bold text-white">DataJinn</span>
       </div>
 
       {/* Navigation */}

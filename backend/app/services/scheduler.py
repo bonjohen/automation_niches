@@ -127,22 +127,22 @@ class TaskScheduler:
             today = date.today()
             soon_threshold = today + timedelta(days=30)
 
-            # Update to expiring_soon
-            expiring_soon = db.query(Requirement).filter(
+            # Update to due_soon
+            due_soon = db.query(Requirement).filter(
                 Requirement.due_date <= soon_threshold,
                 Requirement.due_date > today,
-                Requirement.status == RequirementStatus.COMPLIANT.value,
+                Requirement.status == RequirementStatus.CURRENT.value,
             ).all()
 
-            for req in expiring_soon:
-                req.status = RequirementStatus.EXPIRING_SOON.value
+            for req in due_soon:
+                req.status = RequirementStatus.DUE_SOON.value
 
             # Update to expired
             expired = db.query(Requirement).filter(
                 Requirement.due_date < today,
                 Requirement.status.in_([
-                    RequirementStatus.COMPLIANT.value,
-                    RequirementStatus.EXPIRING_SOON.value,
+                    RequirementStatus.CURRENT.value,
+                    RequirementStatus.DUE_SOON.value,
                     RequirementStatus.PENDING.value,
                 ]),
             ).all()
@@ -152,10 +152,10 @@ class TaskScheduler:
 
             db.commit()
 
-            if expiring_soon or expired:
+            if due_soon or expired:
                 print(
                     f"[{datetime.now()}] Status updates: "
-                    f"{len(expiring_soon)} expiring soon, {len(expired)} expired"
+                    f"{len(due_soon)} due soon, {len(expired)} expired"
                 )
 
         except Exception as e:

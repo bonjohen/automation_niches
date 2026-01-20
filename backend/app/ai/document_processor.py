@@ -218,7 +218,7 @@ class DocumentProcessor:
             Requirement.requirement_type_id.in_(req_type_ids),
             Requirement.status.in_([
                 RequirementStatus.PENDING.value,
-                RequirementStatus.EXPIRING_SOON.value,
+                RequirementStatus.DUE_SOON.value,
                 RequirementStatus.EXPIRED.value,
             ]),
         ).first()
@@ -239,9 +239,9 @@ class DocumentProcessor:
             except (ValueError, TypeError):
                 pass
 
-        # Update status to compliant if confidence is high enough
+        # Update status to current if confidence is high enough
         if extraction_result.confidence >= settings.extraction_confidence_threshold:
-            requirement.status = RequirementStatus.COMPLIANT.value
+            requirement.status = RequirementStatus.CURRENT.value
 
         return requirement.id
 

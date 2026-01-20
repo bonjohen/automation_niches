@@ -1,4 +1,4 @@
-"""Requirement model - compliance tasks with due dates and status tracking."""
+"""Requirement model - tracked tasks with due dates and status tracking."""
 from datetime import date, datetime
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Optional
@@ -18,14 +18,14 @@ if TYPE_CHECKING:
 
 
 class RequirementStatus(str, Enum):
-    """Status of a requirement."""
+    """Status of a requirement/task."""
     PENDING = "pending"           # Not yet started
     IN_PROGRESS = "in_progress"   # Work in progress
-    COMPLIANT = "compliant"       # Meets requirements
-    EXPIRING_SOON = "expiring_soon"  # Due date approaching
+    CURRENT = "current"           # Up to date / meets requirements
+    DUE_SOON = "due_soon"         # Due date approaching
     EXPIRED = "expired"           # Past due date
-    NON_COMPLIANT = "non_compliant"  # Failed/rejected
-    WAIVED = "waived"            # Exempted
+    ACTION_REQUIRED = "action_required"  # Needs attention / failed
+    WAIVED = "waived"             # Exempted
 
 
 class RequirementPriority(str, Enum):
@@ -108,10 +108,10 @@ class RequirementType(Base, UUIDMixin, TimestampMixin):
 
 class Requirement(Base, UUIDMixin, TimestampMixin):
     """
-    Requirement model - a specific compliance task tied to an entity.
+    Requirement model - a tracked task tied to an entity.
 
-    Requirements have due dates, statuses, and can be linked to documents
-    that prove compliance.
+    Requirements/tasks have due dates, statuses, and can be linked to documents
+    that satisfy the requirement.
     """
 
     __tablename__ = "requirements"

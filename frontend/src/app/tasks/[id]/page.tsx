@@ -4,7 +4,7 @@ import { use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { requirementsApi, entitiesApi, documentsApi } from '@/services/api'
+import { tasksApi, entitiesApi, documentsApi } from '@/services/api'
 import { AuthenticatedLayout } from '@/components/layout'
 import { Button, Badge, Card, CardHeader, getStatusVariant } from '@/components/ui'
 import {
@@ -23,7 +23,7 @@ import {
   Edit,
 } from 'lucide-react'
 
-interface RequirementDetailPageProps {
+interface TaskDetailPageProps {
   params: Promise<{ id: string }>
 }
 
@@ -31,17 +31,17 @@ const statusInfo: Record<
   string,
   { icon: typeof CheckCircle; color: string; bgColor: string; label: string }
 > = {
-  compliant: {
+  current: {
     icon: CheckCircle,
     color: 'text-success-600',
     bgColor: 'bg-success-50',
-    label: 'Compliant',
+    label: 'Current',
   },
-  expiring_soon: {
+  due_soon: {
     icon: Clock,
     color: 'text-warning-600',
     bgColor: 'bg-warning-50',
-    label: 'Expiring Soon',
+    label: 'Due Soon',
   },
   expired: {
     icon: XCircle,
@@ -54,6 +54,12 @@ const statusInfo: Record<
     color: 'text-gray-500',
     bgColor: 'bg-gray-50',
     label: 'Pending',
+  },
+  action_required: {
+    icon: AlertCircle,
+    color: 'text-danger-600',
+    bgColor: 'bg-danger-50',
+    label: 'Action Required',
   },
 }
 
@@ -82,55 +88,55 @@ function daysUntil(dateString: string | null | undefined): number | null {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 }
 
-export default function RequirementDetailPage({
+export default function TaskDetailPage({
   params,
-}: RequirementDetailPageProps) {
+}: TaskDetailPageProps) {
   const { id } = use(params)
   const router = useRouter()
   const queryClient = useQueryClient()
 
   const {
-    data: requirement,
+    data: task,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['requirement', id],
-    queryFn: () => requirementsApi.get(id),
+    queryKey: ['task', id],
+    queryFn: () => tasksApi.get(id),
   })
 
   const { data: entity } = useQuery({
-    queryKey: ['entity', requirement?.entity_id],
+    queryKey: ['entity', task?.entity_id],
     queryFn: () =>
-      requirement?.entity_id ? entitiesApi.get(requirement.entity_id) : null,
-    enabled: !!requirement?.entity_id,
+      task?.entity_id ? entitiesApi.get(task.entity_id) : null,
+    enabled: !!task?.entity_id,
   })
 
   const { data: document } = useQuery({
-    queryKey: ['document', requirement?.document_id],
+    queryKey: ['document', task?.document_id],
     queryFn: () =>
-      requirement?.document_id
-        ? documentsApi.get(requirement.document_id)
+      task?.document_id
+        ? documentsApi.get(task.document_id)
         : null,
-    enabled: !!requirement?.document_id,
+    enabled: !!task?.document_id,
   })
 
   const deleteMutation = useMutation({
-    mutationFn: () => requirementsApi.delete(id),
+    mutationFn: () => tasksApi.delete(id),
     onSuccess: () => {
-      router.push('/requirements')
+      router.push('/tasks')
     },
   })
 
   const completeMutation = useMutation({
-    mutationFn: () => requirementsApi.complete(id),
+    mutationFn: () => tasksApi.complete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['requirement', id] })
-      queryClient.invalidateQueries({ queryKey: ['requirements'] })
+      queryClient.invalidateQueries({ queryKey: ['task', id] })
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
     },
   })
 
   const handleDelete = () => {
-    if (confirm(`Are you sure you want to delete "${requirement?.name}"?`)) {
+    if (confirm(`Are you sure you want to delete "${task?.name}"?`)) {
       deleteMutation.mutate()
     }
   }
@@ -145,23 +151,23 @@ export default function RequirementDetailPage({
     )
   }
 
-  if (isError || !requirement) {
+  if (isError || !task) {
     return (
       <AuthenticatedLayout>
         <Card>
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <AlertCircle className="h-12 w-12 text-danger-500 mb-4" />
             <h3 className="text-lg font-medium text-gray-900">
-              Requirement not found
+              Task not found
             </h3>
             <p className="text-gray-500 mt-1">
-              The requirement you are looking for does not exist or has been
+              The task you are looking for does not exist or has been
               deleted.
             </p>
-            <Link href="/requirements" className="mt-4">
+            <Link href="/tasks" className="mt-4">
               <Button variant="outline">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Requirements
+                Back to Tasks
               </Button>
             </Link>
           </div>
@@ -170,9 +176,9 @@ export default function RequirementDetailPage({
     )
   }
 
-  const status = statusInfo[requirement.status] || statusInfo.pending
+  const status = statusInfo[task.status] || statusInfo.pending
   const StatusIcon = status.icon
-  const days = daysUntil(requirement.due_date)
+  const days = daysUntil(task.due_date)
 
   return (
     <AuthenticatedLayout>
@@ -181,7 +187,7 @@ export default function RequirementDetailPage({
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
             <Link
-              href="/requirements"
+              href="/tasks"
               className="mt-1 p-2 rounded-lg hover:bg-gray-100"
             >
               <ArrowLeft className="h-5 w-5 text-gray-500" />
@@ -189,19 +195,19 @@ export default function RequirementDetailPage({
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-gray-900">
-                  {requirement.name}
+                  {task.name}
                 </h1>
-                <Badge variant={getStatusVariant(requirement.status)}>
-                  {requirement.status.replace('_', ' ')}
+                <Badge variant={getStatusVariant(task.status)}>
+                  {task.status.replace('_', ' ')}
                 </Badge>
               </div>
-              {requirement.description && (
-                <p className="text-gray-500 mt-1">{requirement.description}</p>
+              {task.description && (
+                <p className="text-gray-500 mt-1">{task.description}</p>
               )}
             </div>
           </div>
           <div className="flex items-center gap-2 ml-11 sm:ml-0">
-            {requirement.status !== 'compliant' && (
+            {task.status !== 'current' && (
               <Button
                 onClick={() => completeMutation.mutate()}
                 disabled={completeMutation.isPending}
@@ -214,7 +220,7 @@ export default function RequirementDetailPage({
                 Mark Complete
               </Button>
             )}
-            <Link href={`/requirements/${id}/edit`}>
+            <Link href={`/tasks/${id}/edit`}>
               <Button variant="outline">
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
@@ -246,9 +252,9 @@ export default function RequirementDetailPage({
                   {days !== null && (
                     <p className="text-gray-600">
                       {days < 0
-                        ? `This requirement expired ${Math.abs(days)} days ago`
+                        ? `This task expired ${Math.abs(days)} days ago`
                         : days === 0
-                        ? 'This requirement is due today'
+                        ? 'This task is due today'
                         : days <= 7
                         ? `Only ${days} days remaining`
                         : days <= 30
@@ -258,7 +264,7 @@ export default function RequirementDetailPage({
                   )}
                 </div>
               </div>
-              {requirement.status !== 'compliant' && (
+              {task.status !== 'current' && (
                 <div className="mt-4">
                   <Button
                     onClick={() => completeMutation.mutate()}
@@ -276,11 +282,11 @@ export default function RequirementDetailPage({
               )}
             </Card>
 
-            {/* Requirement Details */}
+            {/* Task Details */}
             <Card>
               <CardHeader
-                title="Requirement Details"
-                description="Information about this compliance requirement"
+                title="Task Details"
+                description="Information about this task"
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
@@ -289,7 +295,7 @@ export default function RequirementDetailPage({
                   </label>
                   <p className="mt-1 text-sm text-gray-900 flex items-center">
                     <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                    {formatDate(requirement.due_date)}
+                    {formatDate(task.due_date)}
                   </p>
                 </div>
                 <div>
@@ -298,19 +304,19 @@ export default function RequirementDetailPage({
                   </label>
                   <span
                     className={`mt-1 inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium capitalize border ${
-                      priorityColors[requirement.priority] ||
+                      priorityColors[task.priority] ||
                       'bg-gray-100 text-gray-700 border-gray-200'
                     }`}
                   >
-                    {requirement.priority}
+                    {task.priority}
                   </span>
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Requirement Type
+                    Task Type
                   </label>
                   <p className="mt-1 text-sm text-gray-900">
-                    {requirement.requirement_type_id || '-'}
+                    {task.requirement_type_id || '-'}
                   </p>
                 </div>
                 <div>
@@ -318,7 +324,7 @@ export default function RequirementDetailPage({
                     Created
                   </label>
                   <p className="mt-1 text-sm text-gray-900">
-                    {formatDate(requirement.created_at)}
+                    {formatDate(task.created_at)}
                   </p>
                 </div>
               </div>
@@ -328,7 +334,7 @@ export default function RequirementDetailPage({
             <Card>
               <CardHeader
                 title="Linked Document"
-                description="Document verifying this requirement"
+                description="Document associated with this task"
                 action={
                   !document && entity ? (
                     <Link href={`/documents/upload?entity_id=${entity.id}`}>
@@ -365,7 +371,7 @@ export default function RequirementDetailPage({
                   <FileText className="h-10 w-10 text-gray-300 mb-3" />
                   <p className="text-sm text-gray-500">No document linked</p>
                   <p className="text-xs text-gray-400 mt-1">
-                    Upload a document to verify this requirement
+                    Upload a document to complete this task
                   </p>
                 </div>
               )}
@@ -406,13 +412,13 @@ export default function RequirementDetailPage({
                     <Clock className="h-4 w-4 text-gray-500" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-900">Requirement created</p>
+                    <p className="text-sm text-gray-900">Task created</p>
                     <p className="text-xs text-gray-500">
-                      {formatDate(requirement.created_at)}
+                      {formatDate(task.created_at)}
                     </p>
                   </div>
                 </div>
-                {requirement.updated_at !== requirement.created_at && (
+                {task.updated_at !== task.created_at && (
                   <div className="flex gap-3">
                     <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
                       <Edit className="h-4 w-4 text-gray-500" />
@@ -420,7 +426,7 @@ export default function RequirementDetailPage({
                     <div>
                       <p className="text-sm text-gray-900">Last updated</p>
                       <p className="text-xs text-gray-500">
-                        {formatDate(requirement.updated_at)}
+                        {formatDate(task.updated_at)}
                       </p>
                     </div>
                   </div>
@@ -438,15 +444,15 @@ export default function RequirementDetailPage({
                     </div>
                   </div>
                 )}
-                {requirement.status === 'compliant' && (
+                {task.status === 'current' && (
                   <div className="flex gap-3">
                     <div className="h-8 w-8 rounded-full bg-success-100 flex items-center justify-center flex-shrink-0">
                       <CheckCircle className="h-4 w-4 text-success-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-900">Marked compliant</p>
+                      <p className="text-sm text-gray-900">Marked complete</p>
                       <p className="text-xs text-gray-500">
-                        {formatDate(requirement.updated_at)}
+                        {formatDate(task.updated_at)}
                       </p>
                     </div>
                   </div>

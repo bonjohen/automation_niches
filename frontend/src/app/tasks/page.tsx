@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { requirementsApi, entitiesApi, Requirement } from '@/services/api'
+import { tasksApi, entitiesApi, Task } from '@/services/api'
 import { AuthenticatedLayout } from '@/components/layout'
 import { Button, Input, Badge, Card, getStatusVariant } from '@/components/ui'
 import {
@@ -28,10 +28,11 @@ import {
 
 const statusOptions = [
   { value: '', label: 'All Statuses' },
-  { value: 'compliant', label: 'Compliant' },
-  { value: 'expiring_soon', label: 'Expiring Soon' },
+  { value: 'current', label: 'Current' },
+  { value: 'due_soon', label: 'Due Soon' },
   { value: 'expired', label: 'Expired' },
   { value: 'pending', label: 'Pending' },
+  { value: 'action_required', label: 'Action Required' },
 ]
 
 const priorityOptions = [
@@ -43,17 +44,19 @@ const priorityOptions = [
 ]
 
 const statusIcons: Record<string, typeof CheckCircle> = {
-  compliant: CheckCircle,
-  expiring_soon: Clock,
+  current: CheckCircle,
+  due_soon: Clock,
   expired: XCircle,
   pending: AlertTriangle,
+  action_required: AlertCircle,
 }
 
 const statusColors: Record<string, string> = {
-  compliant: 'text-success-600',
-  expiring_soon: 'text-warning-600',
+  current: 'text-success-600',
+  due_soon: 'text-warning-600',
   expired: 'text-danger-600',
   pending: 'text-gray-500',
+  action_required: 'text-danger-600',
 }
 
 const priorityColors: Record<string, string> = {
@@ -81,7 +84,7 @@ function daysUntil(dateString: string | null | undefined): number | null {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 }
 
-export default function RequirementsPage() {
+export default function TasksPage() {
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('')
@@ -91,9 +94,9 @@ export default function RequirementsPage() {
   const pageSize = 10
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['requirements', { page, status, priority }],
+    queryKey: ['tasks', { page, status, priority }],
     queryFn: () =>
-      requirementsApi.list({
+      tasksApi.list({
         page,
         page_size: pageSize,
         status: status || undefined,
@@ -112,17 +115,17 @@ export default function RequirementsPage() {
   )
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => requirementsApi.delete(id),
+    mutationFn: (id: string) => tasksApi.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['requirements'] })
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
       setOpenMenuId(null)
     },
   })
 
   const completeMutation = useMutation({
-    mutationFn: (id: string) => requirementsApi.complete(id),
+    mutationFn: (id: string) => tasksApi.complete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['requirements'] })
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
       setOpenMenuId(null)
     },
   })
@@ -130,8 +133,8 @@ export default function RequirementsPage() {
   const totalPages = data ? Math.ceil(data.total / pageSize) : 0
 
   // Filter by search client-side
-  const filteredRequirements = data?.items.filter((req) =>
-    search ? req.name.toLowerCase().includes(search.toLowerCase()) : true
+  const filteredTasks = data?.items.filter((task) =>
+    search ? task.name.toLowerCase().includes(search.toLowerCase()) : true
   )
 
   return (
@@ -140,15 +143,15 @@ export default function RequirementsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Requirements</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Tasks</h1>
             <p className="text-gray-500 mt-1">
-              Track compliance requirements and deadlines
+              Track tasks and deadlines
             </p>
           </div>
-          <Link href="/requirements/new">
+          <Link href="/tasks/new">
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Add Requirement
+              Add Task
             </Button>
           </Link>
         </div>
@@ -161,7 +164,7 @@ export default function RequirementsPage() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search requirements..."
+                  placeholder="Search tasks..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10"
@@ -212,7 +215,7 @@ export default function RequirementsPage() {
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <AlertCircle className="h-12 w-12 text-danger-500 mb-4" />
               <h3 className="text-lg font-medium text-gray-900">
-                Failed to load requirements
+                Failed to load tasks
               </h3>
               <p className="text-gray-500 mt-1">
                 {(error as Error)?.message || 'An unexpected error occurred'}
@@ -221,30 +224,30 @@ export default function RequirementsPage() {
                 variant="outline"
                 className="mt-4"
                 onClick={() =>
-                  queryClient.invalidateQueries({ queryKey: ['requirements'] })
+                  queryClient.invalidateQueries({ queryKey: ['tasks'] })
                 }
               >
                 Try Again
               </Button>
             </div>
           </Card>
-        ) : filteredRequirements?.length === 0 ? (
+        ) : filteredTasks?.length === 0 ? (
           <Card>
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <FileCheck className="h-12 w-12 text-gray-300 mb-4" />
               <h3 className="text-lg font-medium text-gray-900">
-                No requirements found
+                No tasks found
               </h3>
               <p className="text-gray-500 mt-1">
                 {search || status || priority
                   ? 'Try adjusting your search or filter criteria'
-                  : 'Get started by adding your first requirement'}
+                  : 'Get started by adding your first task'}
               </p>
               {!search && !status && !priority && (
-                <Link href="/requirements/new" className="mt-4">
+                <Link href="/tasks/new" className="mt-4">
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    Add Requirement
+                    Add Task
                   </Button>
                 </Link>
               )}
@@ -257,7 +260,7 @@ export default function RequirementsPage() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Requirement
+                      Task
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Vendor
@@ -277,41 +280,41 @@ export default function RequirementsPage() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredRequirements?.map((req) => {
-                    const StatusIcon = statusIcons[req.status] || AlertTriangle
-                    const days = daysUntil(req.due_date)
+                  {filteredTasks?.map((task) => {
+                    const StatusIcon = statusIcons[task.status] || AlertTriangle
+                    const days = daysUntil(task.due_date)
                     return (
-                      <tr key={req.id} className="hover:bg-gray-50">
+                      <tr key={task.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4">
                           <div className="flex items-center">
                             <StatusIcon
                               className={`h-5 w-5 mr-3 ${
-                                statusColors[req.status]
+                                statusColors[task.status]
                               }`}
                             />
                             <div>
                               <Link
-                                href={`/requirements/${req.id}`}
+                                href={`/tasks/${task.id}`}
                                 className="text-sm font-medium text-gray-900 hover:text-primary-600"
                               >
-                                {req.name}
+                                {task.name}
                               </Link>
-                              {req.description && (
+                              {task.description && (
                                 <p className="text-xs text-gray-500 truncate max-w-xs">
-                                  {req.description}
+                                  {task.description}
                                 </p>
                               )}
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {req.entity_id ? (
+                          {task.entity_id ? (
                             <Link
-                              href={`/vendors/${req.entity_id}`}
+                              href={`/vendors/${task.entity_id}`}
                               className="flex items-center text-sm text-gray-700 hover:text-primary-600"
                             >
                               <Building2 className="h-4 w-4 mr-1.5 text-gray-400" />
-                              {entityMap.get(req.entity_id) || 'Unknown'}
+                              {entityMap.get(task.entity_id) || 'Unknown'}
                             </Link>
                           ) : (
                             <span className="text-sm text-gray-400">-</span>
@@ -321,7 +324,7 @@ export default function RequirementsPage() {
                           <div className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1.5 text-gray-400" />
                             <span className="text-sm text-gray-900">
-                              {formatDate(req.due_date)}
+                              {formatDate(task.due_date)}
                             </span>
                           </div>
                           {days !== null && (
@@ -347,16 +350,16 @@ export default function RequirementsPage() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
-                              priorityColors[req.priority] ||
+                              priorityColors[task.priority] ||
                               'bg-gray-100 text-gray-700'
                             }`}
                           >
-                            {req.priority}
+                            {task.priority}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <Badge variant={getStatusVariant(req.status)}>
-                            {req.status.replace('_', ' ')}
+                          <Badge variant={getStatusVariant(task.status)}>
+                            {task.status.replace('_', ' ')}
                           </Badge>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -364,14 +367,14 @@ export default function RequirementsPage() {
                             <button
                               onClick={() =>
                                 setOpenMenuId(
-                                  openMenuId === req.id ? null : req.id
+                                  openMenuId === task.id ? null : task.id
                                 )
                               }
                               className="p-2 rounded-lg hover:bg-gray-100"
                             >
                               <MoreVertical className="h-4 w-4 text-gray-500" />
                             </button>
-                            {openMenuId === req.id && (
+                            {openMenuId === task.id && (
                               <>
                                 <div
                                   className="fixed inset-0 z-10"
@@ -380,17 +383,17 @@ export default function RequirementsPage() {
                                 <div className="absolute right-0 z-20 mt-2 w-48 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                                   <div className="py-1">
                                     <Link
-                                      href={`/requirements/${req.id}`}
+                                      href={`/tasks/${task.id}`}
                                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                       onClick={() => setOpenMenuId(null)}
                                     >
                                       <Eye className="h-4 w-4 mr-3" />
                                       View Details
                                     </Link>
-                                    {req.status !== 'compliant' && (
+                                    {task.status !== 'current' && (
                                       <button
                                         onClick={() => {
-                                          completeMutation.mutate(req.id)
+                                          completeMutation.mutate(task.id)
                                         }}
                                         disabled={completeMutation.isPending}
                                         className="flex items-center w-full px-4 py-2 text-sm text-success-700 hover:bg-gray-100"
@@ -403,10 +406,10 @@ export default function RequirementsPage() {
                                       onClick={() => {
                                         if (
                                           confirm(
-                                            `Are you sure you want to delete "${req.name}"?`
+                                            `Are you sure you want to delete "${task.name}"?`
                                           )
                                         ) {
-                                          deleteMutation.mutate(req.id)
+                                          deleteMutation.mutate(task.id)
                                         }
                                       }}
                                       disabled={deleteMutation.isPending}
@@ -434,7 +437,7 @@ export default function RequirementsPage() {
                 <p className="text-sm text-gray-500">
                   Showing {(page - 1) * pageSize + 1} to{' '}
                   {Math.min(page * pageSize, data?.total || 0)} of{' '}
-                  {data?.total || 0} requirements
+                  {data?.total || 0} tasks
                 </p>
                 <div className="flex items-center gap-2">
                   <Button
