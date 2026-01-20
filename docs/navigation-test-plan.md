@@ -5,7 +5,7 @@ Comprehensive verification of all page navigation links in the static_site marke
 
 ## Site Inventory
 
-### Pages (25 total)
+### Pages (23 total)
 **Root Level (3):**
 - `index.html` - Homepage
 - `platform.html` - Platform Features
@@ -16,11 +16,12 @@ Comprehensive verification of all page navigation links in the static_site marke
 - `features/smart-alerts.html`
 - `features/dashboard.html`
 
-**Solutions (16):**
+**Solutions (17):**
 - `solutions/index.html` - Solutions Hub
 - `solutions/business-license.html`
 - `solutions/coi-tracking.html`
 - `solutions/contract-renewal.html`
+- `solutions/data-compliance.html` - **NEW** Data Privacy & Compliance
 - `solutions/environmental-compliance.html`
 - `solutions/equipment-maintenance.html`
 - `solutions/fleet-compliance.html`
